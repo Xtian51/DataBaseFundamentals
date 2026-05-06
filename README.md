@@ -23,6 +23,10 @@
     --muted:     #8b949e;
     --code-bg:   #161b22;
   }
+  
+  html {
+  background-color: #0d1117;
+}
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
