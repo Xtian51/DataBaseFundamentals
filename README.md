@@ -214,45 +214,51 @@
   li strong { color: var(--text); }
 
   /* ── Tabla ───────────────────────────────── */
+ /* ── Tabla Corregida ─────────────────────── */
   .table-wrap { 
     overflow-x: auto; 
     margin: 20px 0; 
-    border-radius: 8px; /* Opcional: para que se vea más limpio */
+    border-radius: 10px;
     border: 1px solid var(--border);
+    background-color: var(--surface); /* Contenedor oscuro */
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
-    background-color: var(--surface); /* Fuerza el fondo oscuro de la tabla */
+    background-color: var(--surface); /* Fondo oscuro principal */
+    color: var(--text);
   }
 
   th {
-    background: var(--surface2); /* Un gris un poco más claro para el encabezado */
+    background-color: var(--surface2) !important; /* Gris más claro para cabecera */
     border: 1px solid var(--border);
-    padding: 12px 14px;
+    padding: 14px;
     text-align: left;
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    color: var(--accent2); /* Azul brillante para los títulos */
-    letter-spacing: .06em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: .05em;
   }
 
   td {
     border: 1px solid var(--border);
-    padding: 10px 14px;
-    color: #e6edf3; /* Cambié esto a un blanco/gris más brillante para legibilidad */
+    padding: 12px 14px;
+    color: #cdd5e0; /* Color grisáceo claro para el texto */
+    background-color: transparent; /* Permite que el fondo de la tabla se vea */
   }
 
-  /* Filas alternas para mejor lectura */
+  /* Filas cebra (alternas) */
   tr:nth-child(even) td { 
-    background: rgba(255, 255, 255, 0.03); 
+    background-color: rgba(255, 255, 255, 0.02); 
   }
   
-  /* Efecto de hover para no perderse en las filas */
+  /* Efecto Hover */
   tr:hover td {
-    background: rgba(37, 99, 235, 0.05);
+    background-color: rgba(37, 99, 235, 0.08) !important;
+    color: #fff;
   }
 
   /* ── Code ────────────────────────────────── */
