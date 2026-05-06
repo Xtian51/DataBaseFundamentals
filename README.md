@@ -210,28 +210,46 @@
   li strong { color: var(--text); }
 
   /* ── Tabla ───────────────────────────────── */
-  .table-wrap { overflow-x: auto; margin: 20px 0; }
+  .table-wrap { 
+    overflow-x: auto; 
+    margin: 20px 0; 
+    border-radius: 8px; /* Opcional: para que se vea más limpio */
+    border: 1px solid var(--border);
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
+    background-color: var(--surface); /* Fuerza el fondo oscuro de la tabla */
   }
+
   th {
-    background: var(--surface2);
+    background: var(--surface2); /* Un gris un poco más claro para el encabezado */
     border: 1px solid var(--border);
-    padding: 10px 14px;
+    padding: 12px 14px;
     text-align: left;
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
-    color: var(--accent2);
+    color: var(--accent2); /* Azul brillante para los títulos */
     letter-spacing: .06em;
   }
+
   td {
     border: 1px solid var(--border);
     padding: 10px 14px;
-    color: #cdd5e0;
+    color: #e6edf3; /* Cambié esto a un blanco/gris más brillante para legibilidad */
   }
-  tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+
+  /* Filas alternas para mejor lectura */
+  tr:nth-child(even) td { 
+    background: rgba(255, 255, 255, 0.03); 
+  }
+  
+  /* Efecto de hover para no perderse en las filas */
+  tr:hover td {
+    background: rgba(37, 99, 235, 0.05);
+  }
 
   /* ── Code ────────────────────────────────── */
   .code-block {
