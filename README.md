@@ -353,7 +353,7 @@
   <h1>Semana 1 — <span>Fundamentos de Bases de Datos</span></h1>
   <p>Unidad I · Conceptos básicos y componentes del sistema de bases de datos</p>
   <div class="pills">
-    <span class="pill">📅 07 – 11 Enero 2025</span>
+    <span class="pill">📅 06 - 08 MAY</span>
     <span class="pill">⏱ 5 horas teoría</span>
     <span class="pill">🎯 Diagnóstico + conceptos base</span>
   </div>
