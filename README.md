@@ -301,6 +301,31 @@ tr:hover td {
   .fn  { color: #d2a8ff; }   /* functions */
   .num { color: #ffa657; }   /* numbers  */
   .op  { color: #ff7b72; }   /* operators */
+  .code-block {
+    background-color: var(--code-bg) !important;
+    border: 1px solid var(--border) !important;
+}
+
+pre {
+    background-color: transparent !important; /* Deja que el fondo oscuro de .code-block mande */
+    color: #e6edf3 !important; /* Color de texto base visible */
+}
+
+/* Forzamos que los elementos internos del código sean visibles */
+pre span {
+    filter: brightness(1.2); /* Les da un toque de brillo extra por si acaso */
+}
+
+/* Si los nombres de columnas (como 'matricula', 'nombre') no se ven: */
+pre {
+    color: #e6edf3 !important; 
+}
+
+/* Ajuste específico para el encabezado del código */
+.code-header {
+    background-color: var(--surface2) !important;
+    border-bottom: 1px solid var(--border) !important;
+}
 
   /* ── Ejercicios ──────────────────────────── */
   .ejercicio {
