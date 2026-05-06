@@ -214,53 +214,50 @@
   li strong { color: var(--text); }
 
   /* ── Tabla ───────────────────────────────── */
- /* ── Tabla Corregida ─────────────────────── */
-  .table-wrap { 
-    overflow-x: auto; 
-    margin: 20px 0; 
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background-color: var(--surface); /* Contenedor oscuro */
-  }
+ .table-wrap { 
+  overflow-x: auto; 
+  margin: 20px 0; 
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background-color: var(--surface) !important; /* Asegura el fondo oscuro */
+}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    background-color: var(--surface); /* Fondo oscuro principal */
-    color: var(--text);
-  }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background-color: var(--surface) !important;
+}
 
-  th {
-    background-color: var(--surface2) !important; /* Gris más claro para cabecera */
-    border: 1px solid var(--border);
-    padding: 14px;
-    text-align: left;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: var(--accent2);
-    text-transform: uppercase;
-    letter-spacing: .05em;
-  }
+th {
+  background-color: var(--surface2) !important;
+  border: 1px solid var(--border);
+  padding: 14px;
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--accent2) !important;
+  text-transform: uppercase;
+}
 
-  td {
-    border: 1px solid var(--border);
-    padding: 12px 14px;
-    color: #cdd5e0; /* Color grisáceo claro para el texto */
-    background-color: transparent; /* Permite que el fondo de la tabla se vea */
-  }
+/* AQUÍ ESTÁ EL CAMBIO CLAVE: Forzamos el fondo en cada celda */
+td {
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  background-color: var(--surface) !important; /* Forza el fondo oscuro de la variable */
+  color: #e6edf3 !important; /* Forza el texto blanco/gris claro */
+}
 
-  /* Filas cebra (alternas) */
-  tr:nth-child(even) td { 
-    background-color: rgba(255, 255, 255, 0.02); 
-  }
-  
-  /* Efecto Hover */
-  tr:hover td {
-    background-color: rgba(37, 99, 235, 0.08) !important;
-    color: #fff;
-  }
+/* Filas cebra: usamos un color ligeramente distinto para que se note el contraste */
+tr:nth-child(even) td { 
+  background-color: #1c2128 !important; /* Un gris un poco más claro que el fondo principal */
+}
 
+/* Efecto Hover para que brille al pasar el ratón */
+tr:hover td {
+  background-color: #2563eb20 !important; /* Azul muy transparente */
+  color: #fff !important;
+}
   /* ── Code ────────────────────────────────── */
   .code-block {
     background: var(--code-bg);
