@@ -97,7 +97,7 @@
   .code-dots { display: flex; gap: 6px; }
   .code-dots i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
   .code-dots i:nth-child(1){ background:#ef4444; } .code-dots i:nth-child(2){ background:#eab308; } .code-dots i:nth-child(3){ background:#22c55e; }
-  pre { padding: 18px 20px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; color: #e6edf3; background: #161b22; }
+  pre { padding: 18px 20px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; color: #e6edf3; background: #161b22 !important; }
   .kw  { color: #79c0ff; } .str { color: #a5d6ff; } .cm { color: #8b949e; font-style: italic; }
   .fn  { color: #d2a8ff; } .num { color: #ffa657; } .op  { color: #ff7b72; }
 
