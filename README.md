@@ -87,7 +87,7 @@
   .table-wrap { overflow-x: auto; margin: 20px 0; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th { background: #21262d; border: 1px solid #30363d; padding: 10px 14px; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #4ade80; letter-spacing: .06em; }
-  td { background: transparent; border: 1px solid #30363d; padding: 10px 14px; color: #cdd5e0; }
+  td { background: #0d1117; border: 1px solid #30363d; padding: 10px 14px; color: #cdd5e0; }
   tr:nth-child(even) td { background: rgba(255,255,255,.04); }
 
   /* Code */
