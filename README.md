@@ -3,463 +3,597 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bases de Datos — Semana 4: Cierre Unidad II</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<title>BDD · Semana 5 — DDL en XAMPP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root { --bg:#0d1117; --surface:#161b22; --border:#30363d; --text:#e6edf3; --muted:#8b949e; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:#0d1117; color:#e6edf3; font-family:'Inter',sans-serif; font-size:15px; line-height:1.7; }
-  header { background:linear-gradient(135deg,#0f172a 0%,#1a1a3e 50%,#0f172a 100%); border-bottom:1px solid #30363d; padding:48px 0 36px; text-align:center; position:relative; overflow:hidden; }
-  header::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 50% 0%,rgba(168,85,247,.13),transparent); pointer-events:none; }
-  .badge { display:inline-block; background:rgba(168,85,247,.12); border:1px solid rgba(168,85,247,.35); color:#c084fc; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; padding:4px 14px; border-radius:20px; margin-bottom:16px; }
-  header h1 { font-family:'Syne',sans-serif; font-size:clamp(22px,4vw,38px); font-weight:800; color:#fff; }
-  header h1 span { color:#c084fc; }
-  header p { color:#8b949e; margin-top:10px; font-size:14px; }
-  .pills { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:20px; }
-  .pill { background:#21262d; border:1px solid #30363d; border-radius:20px; padding:4px 14px; font-size:12px; color:#8b949e; }
-  .container { max-width:960px; margin:0 auto; padding:0 24px; }
-  .layout { display:grid; grid-template-columns:200px 1fr; gap:32px; padding:40px 0 60px; align-items:start; }
-  @media(max-width:760px){ .layout{ grid-template-columns:1fr; } .toc{ display:none; } }
-  .toc { position:sticky; top:20px; background:#161b22; border:1px solid #30363d; border-radius:10px; padding:16px; font-size:13px; }
-  .toc h4 { font-family:'Syne',sans-serif; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#8b949e; margin-bottom:12px; }
-  .toc a { display:block; color:#8b949e; text-decoration:none; padding:4px 0 4px 10px; border-left:2px solid transparent; transition:all .2s; }
-  .toc a:hover { color:#c084fc; border-color:#c084fc; }
-  section { margin-bottom:48px; scroll-margin-top:24px; }
-  .section-label { display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:#c084fc; margin-bottom:8px; }
-  .section-label .dot { width:6px; height:6px; background:#c084fc; border-radius:50%; }
-  h2 { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; color:#fff; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid #30363d; }
-  h3 { font-family:'Syne',sans-serif; font-size:16px; font-weight:600; color:#c084fc; margin:28px 0 12px; }
-  p { color:#cdd5e0; margin-bottom:14px; }
-  ul,ol { padding-left:22px; margin-bottom:14px; }
-  li { color:#cdd5e0; margin-bottom:6px; }
-  li strong { color:#e6edf3; }
-  .card { background:#161b22; border:1px solid #30363d; border-radius:10px; padding:20px 24px; margin-bottom:20px; }
-  .card.purple { border-left:3px solid #a855f7; }
-  .card.green  { border-left:3px solid #22c55e; }
-  .card.blue   { border-left:3px solid #3b82f6; }
-  .card.yellow { border-left:3px solid #eab308; }
-  .card.orange { border-left:3px solid #f97316; }
-  .card h4 { font-family:'Syne',sans-serif; font-size:14px; font-weight:600; margin-bottom:8px; color:#fff; }
-  .card p  { margin:0; font-size:14px; }
-  .definition { background:linear-gradient(135deg,rgba(168,85,247,.07),rgba(192,132,252,.04)); border:1px solid rgba(168,85,247,.28); border-radius:10px; padding:20px 24px; margin:20px 0; }
-  .definition .label { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.12em; color:#c084fc; text-transform:uppercase; margin-bottom:8px; }
-  .definition p { margin:0; }
-  .table-wrap { overflow-x:auto; margin:20px 0; }
-  table { width:100%; border-collapse:collapse; font-size:14px; }
-  th { background:#21262d !important; border:1px solid #30363d !important; padding:10px 14px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:12px; color:#c084fc !important; letter-spacing:.06em; }
-  td { background:#0d1117 !important; border:1px solid #30363d !important; padding:10px 14px; color:#cdd5e0 !important; }
-  tr:nth-child(even) td { background:#161b22 !important; }
-  .code-block { background:#161b22; border:1px solid #30363d; border-radius:10px; margin:20px 0; overflow:hidden; }
-  .code-header { background:#21262d; border-bottom:1px solid #30363d; padding:8px 16px; display:flex; align-items:center; justify-content:space-between; }
-  .code-header span { font-family:'JetBrains Mono',monospace; font-size:11px; color:#8b949e; }
-  .code-dots { display:flex; gap:6px; }
-  .code-dots i { width:10px; height:10px; border-radius:50%; display:inline-block; }
-  .code-dots i:nth-child(1){ background:#ef4444; } .code-dots i:nth-child(2){ background:#eab308; } .code-dots i:nth-child(3){ background:#22c55e; }
-  pre { padding:18px 20px !important; overflow-x:auto; font-family:'JetBrains Mono',monospace !important; font-size:13px; line-height:1.6; color:#e6edf3 !important; background:#161b22 !important; }
-  .kw{color:#79c0ff} .str{color:#a5d6ff} .cm{color:#8b949e;font-style:italic} .fn{color:#d2a8ff} .num{color:#ffa657} .op{color:#ff7b72}
-  .diagram { background:#0d1117 !important; border:1px solid #30363d; border-radius:10px; padding:20px; font-family:'JetBrains Mono',monospace; font-size:12px; color:#c084fc !important; overflow-x:auto; margin:20px 0; white-space:pre; line-height:1.5; }
-  .ejercicio { background:#161b22; border:1px solid #30363d; border-radius:10px; padding:22px 24px; margin-bottom:24px; position:relative; }
-  .ejercicio::before { content:attr(data-num); position:absolute; top:-12px; left:20px; background:#a855f7; color:#fff; font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; padding:2px 12px; border-radius:20px; }
-  .ejercicio.practica::before  { background:#22c55e; }
-  .ejercicio.integrador::before{ background:#f97316; }
-  .ejercicio h4 { font-family:'Syne',sans-serif; font-size:15px; font-weight:600; margin-bottom:10px; color:#fff; }
-  .pipeline { display:flex; gap:0; align-items:center; flex-wrap:wrap; margin:20px 0; }
-  .pipe-step { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px 16px; text-align:center; min-width:110px; }
-  .pipe-step .icon { font-size:22px; margin-bottom:4px; }
-  .pipe-step .name { font-family:'Syne',sans-serif; font-size:12px; font-weight:700; color:#fff; }
-  .pipe-step .sub  { font-size:11px; color:#8b949e; }
-  .pipe-arrow { color:#a855f7; font-size:22px; padding:0 8px; }
-  .summary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; margin-top:20px; }
-  .summary-item { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:14px 16px; text-align:center; }
-  .summary-item .icon { font-size:24px; margin-bottom:6px; }
-  .summary-item .label { font-size:11px; color:#8b949e; margin-top:4px; }
-  .summary-item .val { font-family:'Syne',sans-serif; font-size:13px; font-weight:600; color:#e6edf3; }
-  .checklist { list-style:none; padding:0; }
-  .checklist li { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid #30363d; color:#cdd5e0; font-size:14px; }
-  .checklist li:last-child { border-bottom:none; }
-  .checklist li::before { content:"☐"; color:#c084fc; font-size:16px; flex-shrink:0; margin-top:1px; }
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #f85149;   /* carmesí */
+    --accent2: #ff7b72;  /* coral */
+    --accent-soft: rgba(248,81,73,0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.65;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ───────────────────────────── */
+  header {
+    background:
+      radial-gradient(1200px 400px at 80% -20%, rgba(248,81,73,0.18), transparent 60%),
+      linear-gradient(180deg, #11151c 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 32px 40px;
+  }
+  .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: var(--accent2);
+    border: 1px solid var(--border);
+    background: var(--accent-soft);
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 38px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    max-width: 900px;
+  }
+  header h1 span { color: var(--accent); }
+  header > p {
+    color: var(--muted);
+    margin-top: 12px;
+    font-size: 16px;
+    max-width: 760px;
+  }
+  .pills { margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .pill {
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 7px 13px;
+    border-radius: 8px;
+  }
+
+  /* ── LAYOUT ───────────────────────────── */
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+    padding: 40px 0 80px;
+  }
+  nav.toc {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 16px;
+  }
+  nav.toc h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  nav.toc a {
+    display: block;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13.5px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    transition: background .15s, color .15s;
+  }
+  nav.toc a:hover { background: var(--accent-soft); color: var(--accent2); }
+
+  main { min-width: 0; }
+  section { margin-bottom: 46px; scroll-margin-top: 24px; }
+  .section-label {
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .section-label .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.3px;
+    margin-bottom: 14px;
+  }
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 26px 0 10px;
+    color: var(--text);
+  }
+  p { margin-bottom: 12px; color: #cdd5de; }
+  strong { color: var(--text); }
+  code.inline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: var(--surface2);
+    color: var(--accent2);
+    padding: 2px 6px;
+    border-radius: 5px;
+  }
+
+  /* ── DEFINITION / NOTE BOXES ──────────── */
+  .definition, .note, .warn {
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 18px 0;
+    border: 1px solid var(--border);
+  }
+  .definition { background: var(--accent-soft); border-color: rgba(248,81,73,0.35); }
+  .definition .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    color: var(--accent2); margin-bottom: 6px;
+  }
+  .note { background: var(--surface); }
+  .note .label, .warn .label {
+    font-weight: 700; font-size: 13px; margin-bottom: 4px; display: block;
+  }
+  .note .label { color: var(--accent2); }
+  .warn { background: rgba(210,153,34,0.10); border-color: rgba(210,153,34,0.40); }
+  .warn .label { color: #e3b341; }
+
+  /* ── CODE BLOCKS (fix GitHub Pages) ───── */
+  pre {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    overflow-x: auto;
+    margin: 16px 0;
+    white-space: pre;
+    line-height: 1.55;
+  }
+  pre .kw { color: #ff7b72; font-weight: 500; }
+  pre .ty { color: #79c0ff; }
+  pre .st { color: #a5d6ff; }
+  pre .cm { color: #8b949e; font-style: italic; }
+  .code-cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--muted);
+    margin: 18px 0 -8px; text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* ── TABLES (fix GitHub Pages) ────────── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13.5px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  th {
+    background: #21262d !important;
+    color: #e6edf3 !important;
+    text-align: left;
+    padding: 11px 14px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    background: #0d1117 !important;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: #cdd5de;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #161b22 !important; }
+  td code, th code {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent2);
+    font-size: 12.5px;
+  }
+
+  /* ── PRACTICE CARDS ───────────────────── */
+  .practice {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 18px 0;
+  }
+  .practice .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--accent2);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .practice h3 { margin-top: 6px; }
+  ul, ol { margin: 8px 0 12px 22px; color: #cdd5de; }
+  li { margin-bottom: 5px; }
+
+  /* ── SUMMARY GRID ─────────────────────── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .summary-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .summary-item .icon { font-size: 22px; margin-bottom: 6px; }
+  .summary-item .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .summary-item .val {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 600; color: var(--text); margin-top: 4px;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 32px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; }
+    header h1 { font-size: 30px; }
+  }
 </style>
 </head>
 <body>
+
 <header>
-  <div class="badge">ITIID · Bases de Datos · UPTap · U2 — Cierre</div>
-  <h1>Semana 4 — <span>Cierre Unidad II: Integración del Modelado</span></h1>
-  <p>Unidad II · Ejercicios integradores · ER → Relacional → Diccionario → DDL</p>
+  <div class="badge">ITIID · Bases de Datos · UPTap</div>
+  <h1>Semana 5 — <span>DDL: construyendo la base de datos en XAMPP</span></h1>
+  <p>Unidad II · Cierre — Del modelo relacional al SGBD físico. Tomamos el esquema y el diccionario de datos que ya diseñaron y lo materializamos como tablas reales en MySQL/MariaDB.</p>
   <div class="pills">
-    <span class="pill">📅 25 – 29 Mayo 2026</span>
-    <span class="pill">⏱ Temas 2.1 – 2.5 (repaso integral)</span>
-    <span class="pill">📋 Presentación Evidencia 2</span>
+    <span class="pill">📅 01 – 05 Junio 2026</span>
+    <span class="pill">⏱ 5 horas · teoría + laboratorio</span>
+    <span class="pill">🎯 Crear, alterar y restringir tablas en XAMPP</span>
   </div>
 </header>
+
 <div class="container">
 <div class="layout">
+
   <nav class="toc">
     <h4>Contenido</h4>
-    <a href="#pipeline">🔄 Pipeline completo</a>
-    <a href="#repaso">📐 Repaso rápido</a>
-    <a href="#errores">⚠️ Errores comunes</a>
-    <a href="#caso1">🏥 Caso: Clínica</a>
-    <a href="#caso2">🛒 Caso: E-commerce</a>
+    <a href="#puente">🔗 ¿Dónde estamos?</a>
+    <a href="#xampp">🧰 XAMPP</a>
+    <a href="#sublenguajes">📚 Sublenguajes SQL</a>
+    <a href="#tipos">🔢 Tipos de datos</a>
+    <a href="#create">🏗 CREATE</a>
+    <a href="#restricciones">🔒 Restricciones</a>
+    <a href="#alter">🔧 ALTER / DROP</a>
+    <a href="#ejemplos">💡 Ejemplos</a>
     <a href="#practica">🏋 Práctica</a>
-    <a href="#evidencia">📋 Evidencia 2</a>
-    <a href="#resumen">✅ Resumen U2</a>
+    <a href="#resumen">✅ Resumen</a>
   </nav>
+
   <main>
 
-    <section id="pipeline">
-      <div class="section-label"><span class="dot"></span>01 · El proceso completo</div>
-      <h2>Pipeline: Del problema al DDL</h2>
-      <p>Esta semana cerramos la Unidad II integrando todos los pasos del modelado de bases de datos. El flujo completo es:</p>
-      <div class="pipeline">
-        <div class="pipe-step"><div class="icon">📋</div><div class="name">Análisis</div><div class="sub">Requisitos</div></div>
-        <div class="pipe-arrow">→</div>
-        <div class="pipe-step"><div class="icon">🔷</div><div class="name">Modelo ER</div><div class="sub">Conceptual</div></div>
-        <div class="pipe-arrow">→</div>
-        <div class="pipe-step"><div class="icon">📐</div><div class="name">Esquema Relacional</div><div class="sub">Lógico</div></div>
-        <div class="pipe-arrow">→</div>
-        <div class="pipe-step"><div class="icon">📖</div><div class="name">Diccionario</div><div class="sub">Documentación</div></div>
-        <div class="pipe-arrow">→</div>
-        <div class="pipe-step"><div class="icon">🗄</div><div class="name">DDL</div><div class="sub">Físico</div></div>
-      </div>
-      <div class="card purple">
-        <h4>🎯 Objetivo de la semana</h4>
-        <p>Ejecutar el pipeline completo sobre dos casos reales de principio a fin. Al terminar, cada equipo aplica el mismo proceso sobre su proyecto final para la Evidencia 2.</p>
+    <!-- ═══ PUENTE ═══ -->
+    <section id="puente">
+      <div class="section-label"><span class="dot"></span>00 · Contexto</div>
+      <h2>¿Dónde estamos y qué sigue?</h2>
+      <p>Durante la Unidad II aprendieron a <strong>modelar</strong>: pasaron del mundo real a un diagrama Entidad-Relación, lo tradujeron al modelo relacional (tablas, llaves primarias y foráneas) y lo documentaron en un diccionario de datos. Ese fue el trabajo de su <strong>Evidencia 2</strong>.</p>
+      <p>Pero hasta ahora todo ha vivido en papel y en diagramas. Esta semana damos el salto que hace tangible la materia: vamos a <strong>construir físicamente</strong> ese diseño dentro de un Sistema Gestor de Base de Datos (SGBD) real. Para eso usamos el lenguaje <strong>DDL</strong> (Data Definition Language) y la herramienta <strong>XAMPP</strong>, que trae MySQL/MariaDB listo para usar.</p>
+      <div class="definition">
+        <div class="label">Idea clave de la semana</div>
+        <p style="margin:0;">Cada <strong>entidad</strong> de su diagrama se convierte en una <code class="inline">CREATE TABLE</code>; cada <strong>atributo</strong>, en una columna con su tipo de dato; cada <strong>llave primaria</strong>, en un <code class="inline">PRIMARY KEY</code>; y cada <strong>relación</strong>, en un <code class="inline">FOREIGN KEY</code>. El diccionario de datos es, literalmente, el plano de construcción.</p>
       </div>
     </section>
 
-    <section id="repaso">
-      <div class="section-label"><span class="dot"></span>02 · Repaso rápido</div>
-      <h2>Repaso Rápido — Unidad II en una tabla</h2>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Concepto</th><th>Definición clave</th><th>Regla práctica</th></tr>
-          <tr><td><strong>Entidad</strong></td><td>Objeto del mundo real del que guardamos datos</td><td>Si necesitas varios datos de algo → es entidad</td></tr>
-          <tr><td><strong>Atrib. multivaluado</strong></td><td>Campo con más de un valor por instancia</td><td>Siempre genera tabla separada (R5)</td></tr>
-          <tr><td><strong>Relación 1:N</strong></td><td>Un registro de A ↔ muchos de B</td><td>FK va en la tabla del lado N (R2)</td></tr>
-          <tr><td><strong>Relación N:M</strong></td><td>Muchos de A ↔ muchos de B</td><td>Siempre genera tabla intermedia con PK compuesta (R3)</td></tr>
-          <tr><td><strong>Relación 1:1</strong></td><td>Un registro de A ↔ exactamente uno de B</td><td>FK + UNIQUE en la tabla de participación total (R4)</td></tr>
-          <tr><td><strong>Diccionario de datos</strong></td><td>Documentación técnica de cada campo</td><td>Nombre · tipo · restricciones · default · descripción</td></tr>
-        </table>
-      </div>
-      <h3>Las 5 reglas de transformación</h3>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Regla</th><th>Situación ER</th><th>Resultado en el modelo relacional</th><th>¿Tabla nueva?</th></tr>
-          <tr><td><strong>R1</strong></td><td>Entidad fuerte</td><td>Una tabla con sus atributos simples</td><td>✅ Sí</td></tr>
-          <tr><td><strong>R2</strong></td><td>Relación 1:N</td><td>PK del lado "1" como FK en la tabla del lado "N"</td><td>❌ No</td></tr>
-          <tr><td><strong>R3</strong></td><td>Relación N:M</td><td>Tabla intermedia con PK compuesta (FK1 + FK2)</td><td>✅ Sí</td></tr>
-          <tr><td><strong>R4</strong></td><td>Relación 1:1</td><td>FK + UNIQUE en la tabla de participación total</td><td>❌ No</td></tr>
-          <tr><td><strong>R5</strong></td><td>Atributo multivaluado</td><td>Tabla nueva: PK_padre (FK) + atributo. PK compuesta.</td><td>✅ Sí</td></tr>
-        </table>
+    <!-- ═══ XAMPP ═══ -->
+    <section id="xampp">
+      <div class="section-label"><span class="dot"></span>01 · Herramienta</div>
+      <h2>XAMPP y phpMyAdmin</h2>
+      <p><strong>XAMPP</strong> es un paquete gratuito que instala de un solo golpe un entorno de desarrollo web completo. Su nombre viene de <strong>X</strong> (multiplataforma), <strong>A</strong>pache, <strong>M</strong>ariaDB/MySQL, <strong>P</strong>HP y <strong>P</strong>erl. Para nuestra materia nos interesa principalmente el motor de base de datos.</p>
+      <table>
+        <tr><th>Componente</th><th>Para qué sirve en esta materia</th></tr>
+        <tr><td><strong>MySQL / MariaDB</strong></td><td>El SGBD donde realmente viven las tablas y los datos. Aquí ejecutamos nuestro DDL.</td></tr>
+        <tr><td><strong>Apache</strong></td><td>Servidor web. Necesario para que phpMyAdmin funcione en el navegador.</td></tr>
+        <tr><td><strong>phpMyAdmin</strong></td><td>Interfaz gráfica para administrar la base de datos desde el navegador, sin escribir todo a mano.</td></tr>
+        <tr><td>PHP / Perl</td><td>Lenguajes de servidor (los usaremos más adelante, no esta semana).</td></tr>
+      </table>
+      <h3>Flujo de trabajo en clase</h3>
+      <ol>
+        <li>Abrir el <strong>Panel de Control de XAMPP</strong> y presionar <strong>Start</strong> en <code class="inline">Apache</code> y en <code class="inline">MySQL</code> (deben quedar en verde).</li>
+        <li>En el navegador ir a <code class="inline">http://localhost/phpmyadmin</code>.</li>
+        <li>Usar la pestaña <strong>SQL</strong> para escribir y ejecutar los comandos DDL — así practican la sintaxis real, no solo el modo "clic".</li>
+      </ol>
+      <div class="note">
+        <span class="label">Nota</span>
+        Aunque phpMyAdmin permite crear tablas con botones, en esta semana <strong>escribiremos el SQL a mano</strong>. El objetivo es que dominen el lenguaje, no la interfaz: el SQL es portable a cualquier SGBD; los botones no.
       </div>
     </section>
 
-    <section id="errores">
-      <div class="section-label"><span class="dot"></span>03 · Errores frecuentes</div>
-      <h2>Errores Comunes al Modelar</h2>
-
-      <div class="ejercicio" data-num="Error 1 — FK en el lado equivocado">
-        <h4>Poner la FK en el lado "1" en lugar del lado "N"</h4>
-        <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>❌ Incorrecto</span></div>
-<pre><span class="cm">-- CLIENTE (1) ──── realiza ──── (N) PEDIDO</span>
-<span class="kw">CREATE TABLE</span> CLIENTE (
-    id_cliente <span class="kw">INT PRIMARY KEY</span>,
-    nombre     <span class="kw">VARCHAR</span>(<span class="num">100</span>),
-    id_pedido  <span class="kw">INT</span>  <span class="cm">-- ❌ Limita el cliente a UN solo pedido</span>
-);</pre></div>
-        <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>✅ Correcto — FK en el lado N</span></div>
-<pre><span class="kw">CREATE TABLE</span> PEDIDO (
-    id_pedido  <span class="kw">INT PRIMARY KEY</span>,
-    fecha      <span class="kw">DATE</span>,
-    id_cliente <span class="kw">INT NOT NULL</span>,  <span class="cm">-- ✅ FK en PEDIDO (lado N)</span>
-    <span class="kw">FOREIGN KEY</span>(id_cliente) <span class="kw">REFERENCES</span> CLIENTE(id_cliente)
-);</pre></div>
-      </div>
-
-      <div class="ejercicio" data-num="Error 2 — N:M sin tabla intermedia">
-        <h4>Tratar una relación N:M como si fuera 1:N</h4>
-        <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>❌ Incorrecto — un estudiante solo cursaría 1 materia</span></div>
-<pre><span class="kw">CREATE TABLE</span> ESTUDIANTE (
-    id_est <span class="kw">INT PRIMARY KEY</span>,
-    nombre <span class="kw">VARCHAR</span>(<span class="num">100</span>),
-    id_mat <span class="kw">INT</span>  <span class="cm">-- ❌ Solo puede cursar UNA materia</span>
-);</pre></div>
-        <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>✅ Correcto — tabla intermedia INSCRIPCION</span></div>
-<pre><span class="kw">CREATE TABLE</span> INSCRIPCION (
-    id_est  <span class="kw">INT NOT NULL</span>,
-    id_mat  <span class="kw">INT NOT NULL</span>,
-    periodo <span class="kw">VARCHAR</span>(<span class="num">20</span>),
-    <span class="kw">PRIMARY KEY</span>(id_est, id_mat),
-    <span class="kw">FOREIGN KEY</span>(id_est) <span class="kw">REFERENCES</span> ESTUDIANTE(id_est),
-    <span class="kw">FOREIGN KEY</span>(id_mat) <span class="kw">REFERENCES</span> MATERIA(id_mat)
-);</pre></div>
-      </div>
-
-      <div class="ejercicio" data-num="Error 3 — Atributo multivaluado en columna">
-        <h4>Guardar múltiples valores en una sola columna (viola 1FN)</h4>
-        <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>❌ Incorrecto</span></div>
-<pre><span class="kw">CREATE TABLE</span> EMPLEADO (
-    id_emp    <span class="kw">INT PRIMARY KEY</span>,
-    telefonos <span class="kw">VARCHAR</span>(<span class="num">200</span>)  <span class="cm">-- ❌ '961-111,961-222' en una celda</span>
-);</pre></div>
-        <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>✅ Correcto — tabla separada (R5)</span></div>
-<pre><span class="kw">CREATE TABLE</span> TELEFONO_EMP (
-    id_emp <span class="kw">INT NOT NULL</span>,
-    numero <span class="kw">VARCHAR</span>(<span class="num">20</span>) <span class="kw">NOT NULL</span>,
-    tipo   <span class="kw">ENUM</span>(<span class="str">'casa'</span>,<span class="str">'movil'</span>,<span class="str">'trabajo'</span>),
-    <span class="kw">PRIMARY KEY</span>(id_emp, numero),
-    <span class="kw">FOREIGN KEY</span>(id_emp) <span class="kw">REFERENCES</span> EMPLEADO(id_emp)
-);</pre></div>
-      </div>
-
-      <div class="ejercicio" data-num="Error 4 — Orden de creación de tablas">
-        <h4>Crear una tabla con FK antes que la tabla referenciada</h4>
-        <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>❌ Incorrecto — error en tiempo de ejecución</span></div>
-<pre><span class="kw">CREATE TABLE</span> PEDIDO (
-    id_pedido  <span class="kw">INT PRIMARY KEY</span>,
-    id_cliente <span class="kw">INT</span>,
-    <span class="kw">FOREIGN KEY</span>(id_cliente) <span class="kw">REFERENCES</span> CLIENTE(id_cliente) <span class="cm">-- ❌ CLIENTE no existe aún</span>
-);
-<span class="kw">CREATE TABLE</span> CLIENTE ( id_cliente <span class="kw">INT PRIMARY KEY</span>, ... );</pre></div>
-        <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>✅ Correcto — primero las tablas referenciadas</span></div>
-<pre><span class="cm">-- Regla: primero tablas SIN FK, luego las que tienen FK</span>
-<span class="kw">CREATE TABLE</span> CLIENTE ( id_cliente <span class="kw">INT PRIMARY KEY</span>, ... );   <span class="cm">-- 1ro</span>
-<span class="kw">CREATE TABLE</span> PEDIDO  ( ..., <span class="kw">FOREIGN KEY</span>(id_cliente) <span class="kw">REFERENCES</span> CLIENTE(id_cliente) ); <span class="cm">-- 2do</span></pre></div>
+    <!-- ═══ SUBLENGUAJES ═══ -->
+    <section id="sublenguajes">
+      <div class="section-label"><span class="dot"></span>02 · Teoría</div>
+      <h2>Los sublenguajes de SQL</h2>
+      <p>SQL no es un solo lenguaje monolítico; se divide en sublenguajes según la tarea. Esta semana nos concentramos en el primero.</p>
+      <table>
+        <tr><th>Sublenguaje</th><th>Significado</th><th>Comandos principales</th><th>¿Qué hace?</th></tr>
+        <tr><td><strong>DDL</strong></td><td>Data Definition Language</td><td><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>, <code>TRUNCATE</code></td><td>Define y modifica la <em>estructura</em> (bases, tablas, columnas, restricciones).</td></tr>
+        <tr><td>DML</td><td>Data Manipulation Language</td><td><code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td><td>Trabaja con los <em>datos</em> dentro de las tablas (Unidad IV).</td></tr>
+        <tr><td>DCL</td><td>Data Control Language</td><td><code>GRANT</code>, <code>REVOKE</code></td><td>Gestiona permisos y privilegios de usuarios.</td></tr>
+        <tr><td>TCL</td><td>Transaction Control Language</td><td><code>COMMIT</code>, <code>ROLLBACK</code></td><td>Controla transacciones (confirmar o deshacer cambios).</td></tr>
+      </table>
+      <div class="definition">
+        <div class="label">DDL en una frase</div>
+        <p style="margin:0;">El DDL es el lenguaje con el que le <strong>describimos al SGBD cómo debe ser la base de datos</strong>: qué tablas existen, qué columnas tiene cada una, de qué tipo, y qué reglas deben cumplirse siempre.</p>
       </div>
     </section>
 
-    <section id="caso1">
-      <div class="section-label"><span class="dot"></span>04 · Caso integrador 1</div>
-      <h2>Caso Integrador 1 — Clínica Médica</h2>
-      <div class="card blue">
-        <h4>📋 Enunciado</h4>
-        <p>Una clínica gestiona médicos de distintas especialidades. Los pacientes se registran con múltiples teléfonos y tienen consultas. En cada consulta el médico emite recetas con medicamentos. Los médicos trabajan en varias sucursales.</p>
-      </div>
-      <h3>Relaciones identificadas</h3>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Relación</th><th>Cardinalidad</th><th>Regla</th><th>Resultado</th></tr>
-          <tr><td>PACIENTE — CONSULTA</td><td>1:N</td><td>R2</td><td>FK id_paciente en CONSULTA</td></tr>
-          <tr><td>MEDICO — CONSULTA</td><td>1:N</td><td>R2</td><td>FK id_medico en CONSULTA</td></tr>
-          <tr><td>CONSULTA — MEDICAMENTO</td><td>N:M</td><td>R3</td><td>Tabla RECETA</td></tr>
-          <tr><td>MEDICO — SUCURSAL</td><td>N:M</td><td>R3</td><td>Tabla MEDICO_SUCURSAL</td></tr>
-          <tr><td>PACIENTE — teléfono</td><td>multivaluado</td><td>R5</td><td>Tabla TELEFONO_PACIENTE</td></tr>
-        </table>
-      </div>
-      <h3>Esquema relacional</h3>
-      <div class="diagram">MEDICO(<u>id_medico</u>, nombre, especialidad, cedula, email)
-SUCURSAL(<u>id_suc</u>, nombre, direccion, telefono)
-MEDICO_SUCURSAL(<u>id_medico*</u>, <u>id_suc*</u>, horario)
-PACIENTE(<u>id_paciente</u>, nombre, fecha_nac, nss)
-TELEFONO_PACIENTE(<u>id_paciente*</u>, <u>numero</u>, tipo)
-MEDICAMENTO(<u>id_med</u>, nombre, laboratorio, presentacion)
-CONSULTA(<u>id_consulta</u>, fecha, diagnostico, costo, id_paciente*, id_medico*)
-RECETA(<u>id_consulta*</u>, <u>id_med*</u>, dosis, duracion_dias)</div>
-      <h3>DDL completo</h3>
-      <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>MySQL — Clínica médica</span></div>
-<pre><span class="cm">-- 1. Tablas sin FK</span>
-<span class="kw">CREATE TABLE</span> MEDICO (
-    id_medico    <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>,
-    nombre       <span class="kw">VARCHAR</span>(<span class="num">150</span>) <span class="kw">NOT NULL</span>,
-    especialidad <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span>,
-    cedula       <span class="kw">VARCHAR</span>(<span class="num">20</span>)  <span class="kw">NOT NULL UNIQUE</span>,
-    email        <span class="kw">VARCHAR</span>(<span class="num">200</span>) <span class="kw">UNIQUE</span>
-);
-<span class="kw">CREATE TABLE</span> SUCURSAL (
-    id_suc    <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>,
-    nombre    <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span>,
-    direccion <span class="kw">VARCHAR</span>(<span class="num">300</span>),
-    telefono  <span class="kw">VARCHAR</span>(<span class="num">15</span>)
-);
-<span class="kw">CREATE TABLE</span> PACIENTE (
-    id_paciente <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>,
-    nombre      <span class="kw">VARCHAR</span>(<span class="num">150</span>) <span class="kw">NOT NULL</span>,
-    fecha_nac   <span class="kw">DATE NOT NULL</span>,
-    nss         <span class="kw">VARCHAR</span>(<span class="num">20</span>) <span class="kw">UNIQUE</span>
-);
-<span class="kw">CREATE TABLE</span> MEDICAMENTO (
-    id_med       <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>,
-    nombre       <span class="kw">VARCHAR</span>(<span class="num">150</span>) <span class="kw">NOT NULL</span>,
-    laboratorio  <span class="kw">VARCHAR</span>(<span class="num">100</span>),
-    presentacion <span class="kw">VARCHAR</span>(<span class="num">100</span>)
-);
-<span class="cm">-- 2. Tablas con FK</span>
-<span class="kw">CREATE TABLE</span> MEDICO_SUCURSAL (
-    id_medico <span class="kw">INT NOT NULL</span>, id_suc <span class="kw">INT NOT NULL</span>,
-    horario   <span class="kw">VARCHAR</span>(<span class="num">100</span>),
-    <span class="kw">PRIMARY KEY</span>(id_medico, id_suc),
-    <span class="kw">FOREIGN KEY</span>(id_medico) <span class="kw">REFERENCES</span> MEDICO(id_medico),
-    <span class="kw">FOREIGN KEY</span>(id_suc)    <span class="kw">REFERENCES</span> SUCURSAL(id_suc)
-);
-<span class="kw">CREATE TABLE</span> TELEFONO_PACIENTE (
-    id_paciente <span class="kw">INT NOT NULL</span>,
-    numero      <span class="kw">VARCHAR</span>(<span class="num">20</span>) <span class="kw">NOT NULL</span>,
-    tipo        <span class="kw">ENUM</span>(<span class="str">'casa'</span>,<span class="str">'movil'</span>,<span class="str">'trabajo'</span>) <span class="kw">DEFAULT</span> <span class="str">'movil'</span>,
-    <span class="kw">PRIMARY KEY</span>(id_paciente, numero),
-    <span class="kw">FOREIGN KEY</span>(id_paciente) <span class="kw">REFERENCES</span> PACIENTE(id_paciente)
-);
-<span class="kw">CREATE TABLE</span> CONSULTA (
-    id_consulta <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>,
-    fecha       <span class="kw">DATETIME NOT NULL DEFAULT</span> <span class="fn">NOW</span>(),
-    diagnostico <span class="kw">TEXT</span>,
-    costo       <span class="kw">DECIMAL</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">NOT NULL CHECK</span>(costo >= <span class="num">0</span>),
-    id_paciente <span class="kw">INT NOT NULL</span>, id_medico <span class="kw">INT NOT NULL</span>,
-    <span class="kw">FOREIGN KEY</span>(id_paciente) <span class="kw">REFERENCES</span> PACIENTE(id_paciente),
-    <span class="kw">FOREIGN KEY</span>(id_medico)   <span class="kw">REFERENCES</span> MEDICO(id_medico)
-);
-<span class="kw">CREATE TABLE</span> RECETA (
-    id_consulta   <span class="kw">INT NOT NULL</span>, id_med <span class="kw">INT NOT NULL</span>,
-    dosis         <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span>,
-    duracion_dias <span class="kw">INT NOT NULL CHECK</span>(duracion_dias > <span class="num">0</span>),
-    <span class="kw">PRIMARY KEY</span>(id_consulta, id_med),
-    <span class="kw">FOREIGN KEY</span>(id_consulta) <span class="kw">REFERENCES</span> CONSULTA(id_consulta),
-    <span class="kw">FOREIGN KEY</span>(id_med)      <span class="kw">REFERENCES</span> MEDICAMENTO(id_med)
-);</pre></div>
-      <h3>Fragmento del diccionario — Tabla CONSULTA</h3>
-      <div class="table-wrap">
-        <table>
-          <tr><th>Atributo</th><th>Tipo</th><th>Restricciones</th><th>Default</th><th>Descripción</th></tr>
-          <tr><td><strong>id_consulta</strong></td><td>INT</td><td>PK, NOT NULL, AUTO_INC</td><td>AUTO</td><td>Identificador único de la consulta</td></tr>
-          <tr><td><strong>fecha</strong></td><td>DATETIME</td><td>NOT NULL</td><td>NOW()</td><td>Fecha y hora en que se realizó la consulta</td></tr>
-          <tr><td><strong>diagnostico</strong></td><td>TEXT</td><td>NULL permitido</td><td>NULL</td><td>Diagnóstico emitido por el médico</td></tr>
-          <tr><td><strong>costo</strong></td><td>DECIMAL(10,2)</td><td>NOT NULL, CHECK ≥ 0</td><td>—</td><td>Costo de la consulta en pesos MXN</td></tr>
-          <tr><td><strong>id_paciente</strong></td><td>INT</td><td>FK → PACIENTE, NOT NULL</td><td>—</td><td>Paciente atendido</td></tr>
-          <tr><td><strong>id_medico</strong></td><td>INT</td><td>FK → MEDICO, NOT NULL</td><td>—</td><td>Médico que realizó la consulta</td></tr>
-        </table>
+    <!-- ═══ TIPOS DE DATOS ═══ -->
+    <section id="tipos">
+      <div class="section-label"><span class="dot"></span>03 · Teoría</div>
+      <h2>Tipos de datos en MySQL</h2>
+      <p>Cada columna debe declarar un <strong>tipo de dato</strong>, que determina qué valores puede almacenar y cuánto espacio ocupa. Elegir bien el tipo es la primera decisión de calidad de un diseño: aquí es donde el <strong>dominio</strong> que escribieron en su diccionario de datos se vuelve un tipo concreto.</p>
+      <table>
+        <tr><th>Categoría</th><th>Tipo MySQL</th><th>Uso típico</th></tr>
+        <tr><td rowspan="3">Numéricos</td><td><code>INT</code> / <code>BIGINT</code></td><td>Identificadores, cantidades enteras (matrícula, stock).</td></tr>
+        <tr><td><code>DECIMAL(p,s)</code></td><td>Dinero y valores exactos. Ej. <code>DECIMAL(8,2)</code> → 999999.99</td></tr>
+        <tr><td><code>FLOAT</code> / <code>DOUBLE</code></td><td>Valores con decimales aproximados (mediciones científicas).</td></tr>
+        <tr><td rowspan="3">Cadenas</td><td><code>VARCHAR(n)</code></td><td>Texto de longitud variable hasta <code>n</code> (nombres, correos).</td></tr>
+        <tr><td><code>CHAR(n)</code></td><td>Texto de longitud fija (RFC, códigos de tamaño constante).</td></tr>
+        <tr><td><code>TEXT</code></td><td>Texto largo sin límite práctico (descripciones, comentarios).</td></tr>
+        <tr><td rowspan="3">Fecha / hora</td><td><code>DATE</code></td><td>Solo fecha: <code>2026-06-01</code>.</td></tr>
+        <tr><td><code>DATETIME</code></td><td>Fecha y hora: <code>2026-06-01 14:30:00</code>.</td></tr>
+        <tr><td><code>TIMESTAMP</code></td><td>Marca temporal automática (fecha de creación/registro).</td></tr>
+        <tr><td>Lógicos / otros</td><td><code>BOOLEAN</code>, <code>ENUM(...)</code></td><td>Verdadero/falso, o lista cerrada de valores (ej. estado).</td></tr>
+      </table>
+      <div class="warn">
+        <span class="label">⚠ Error común</span>
+        Usar <code class="inline">FLOAT</code> o <code class="inline">DOUBLE</code> para guardar dinero. Por su representación binaria pueden introducir errores de redondeo. Para precios y montos siempre usen <code class="inline">DECIMAL(p,s)</code>.
       </div>
     </section>
 
-    <section id="caso2">
-      <div class="section-label"><span class="dot"></span>05 · Caso integrador 2</div>
-      <h2>Caso Integrador 2 — Tienda en Línea</h2>
-      <div class="card orange">
-        <h4>📋 Enunciado</h4>
-        <p>Una tienda en línea vende productos por categorías. Los clientes tienen múltiples direcciones. Las órdenes contienen varios productos. Los productos tienen imágenes múltiples y son surtidos por proveedores (N:M).</p>
-      </div>
-      <h3>Esquema relacional</h3>
-      <div class="diagram">CATEGORIA(<u>id_cat</u>, nombre)
-PROVEEDOR(<u>id_prov</u>, nombre, contacto, telefono)
-CLIENTE(<u>id_cliente</u>, nombre, email, fecha_registro)
-PRODUCTO(<u>id_prod</u>, nombre, precio, stock, id_cat*)
-IMAGEN_PRODUCTO(<u>id_prod*</u>, <u>url</u>, es_portada)            -- R5
-SUMINISTRO(<u>id_prov*</u>, <u>id_prod*</u>, precio_costo)           -- R3 N:M
-DIRECCION(<u>id_dir</u>, calle, ciudad, cp, id_cliente*)
-ORDEN(<u>id_orden</u>, fecha, total, estatus, id_cliente*, id_dir*)
-DETALLE_ORDEN(<u>id_orden*</u>, <u>id_prod*</u>, cantidad, precio_unit) -- R3 N:M</div>
-      <div class="code-block"><div class="code-header"><div class="code-dots"><i></i><i></i><i></i></div><span>MySQL — E-commerce completo</span></div>
-<pre><span class="cm">-- Nivel 0: sin FK</span>
-<span class="kw">CREATE TABLE</span> CATEGORIA  (<span class="kw">id_cat</span>  <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>, nombre <span class="kw">VARCHAR</span>(<span class="num">80</span>) <span class="kw">NOT NULL UNIQUE</span>);
-<span class="kw">CREATE TABLE</span> PROVEEDOR  (<span class="kw">id_prov</span> <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>, nombre <span class="kw">VARCHAR</span>(<span class="num">150</span>) <span class="kw">NOT NULL</span>, contacto <span class="kw">VARCHAR</span>(<span class="num">200</span>), telefono <span class="kw">VARCHAR</span>(<span class="num">20</span>));
-<span class="kw">CREATE TABLE</span> CLIENTE    (<span class="kw">id_cliente</span> <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>, nombre <span class="kw">VARCHAR</span>(<span class="num">150</span>) <span class="kw">NOT NULL</span>, email <span class="kw">VARCHAR</span>(<span class="num">200</span>) <span class="kw">NOT NULL UNIQUE</span>, fecha_registro <span class="kw">DATETIME DEFAULT</span> <span class="fn">NOW</span>());
+    <!-- ═══ CREATE ═══ -->
+    <section id="create">
+      <div class="section-label"><span class="dot"></span>04 · Teoría</div>
+      <h2>CREATE DATABASE y CREATE TABLE</h2>
+      <h3>Crear y seleccionar la base de datos</h3>
+      <pre><span class="kw">CREATE DATABASE</span> escuela
+    <span class="kw">CHARACTER SET</span> utf8mb4
+    <span class="kw">COLLATE</span> utf8mb4_spanish_ci;
 
-<span class="cm">-- Nivel 1: FK a nivel 0</span>
-<span class="kw">CREATE TABLE</span> PRODUCTO (
-    id_prod <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>, nombre <span class="kw">VARCHAR</span>(<span class="num">200</span>) <span class="kw">NOT NULL</span>,
-    precio  <span class="kw">DECIMAL</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">NOT NULL CHECK</span>(precio > <span class="num">0</span>),
-    stock   <span class="kw">INT NOT NULL DEFAULT</span> <span class="num">0</span> <span class="kw">CHECK</span>(stock >= <span class="num">0</span>),
-    id_cat  <span class="kw">INT NOT NULL</span>, <span class="kw">FOREIGN KEY</span>(id_cat) <span class="kw">REFERENCES</span> CATEGORIA(id_cat)
-);
-<span class="kw">CREATE TABLE</span> DIRECCION (
-    id_dir <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>, calle <span class="kw">VARCHAR</span>(<span class="num">200</span>) <span class="kw">NOT NULL</span>,
-    ciudad <span class="kw">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span>, cp <span class="kw">VARCHAR</span>(<span class="num">10</span>),
-    id_cliente <span class="kw">INT NOT NULL</span>, <span class="kw">FOREIGN KEY</span>(id_cliente) <span class="kw">REFERENCES</span> CLIENTE(id_cliente)
-);
+<span class="kw">USE</span> escuela;</pre>
+      <p>El <code class="inline">CHARACTER SET utf8mb4</code> garantiza que se guarden correctamente acentos, ñ y emojis; el <code class="inline">COLLATE</code> define cómo se ordenan y comparan los textos (ej. que la "ñ" se ordene después de la "n").</p>
 
-<span class="cm">-- Nivel 2: FK a nivel 1</span>
-<span class="kw">CREATE TABLE</span> IMAGEN_PRODUCTO (
-    id_prod <span class="kw">INT NOT NULL</span>, url <span class="kw">VARCHAR</span>(<span class="num">500</span>) <span class="kw">NOT NULL</span>, es_portada <span class="kw">TINYINT</span>(<span class="num">1</span>) <span class="kw">DEFAULT</span> <span class="num">0</span>,
-    <span class="kw">PRIMARY KEY</span>(id_prod, url), <span class="kw">FOREIGN KEY</span>(id_prod) <span class="kw">REFERENCES</span> PRODUCTO(id_prod)
-);
-<span class="kw">CREATE TABLE</span> SUMINISTRO (
-    id_prov <span class="kw">INT NOT NULL</span>, id_prod <span class="kw">INT NOT NULL</span>, precio_costo <span class="kw">DECIMAL</span>(<span class="num">10</span>,<span class="num">2</span>),
-    <span class="kw">PRIMARY KEY</span>(id_prov, id_prod),
-    <span class="kw">FOREIGN KEY</span>(id_prov) <span class="kw">REFERENCES</span> PROVEEDOR(id_prov),
-    <span class="kw">FOREIGN KEY</span>(id_prod) <span class="kw">REFERENCES</span> PRODUCTO(id_prod)
-);
-<span class="kw">CREATE TABLE</span> ORDEN (
-    id_orden   <span class="kw">INT PRIMARY KEY AUTO_INCREMENT</span>, fecha <span class="kw">DATETIME NOT NULL DEFAULT</span> <span class="fn">NOW</span>(),
-    total      <span class="kw">DECIMAL</span>(<span class="num">12</span>,<span class="num">2</span>) <span class="kw">NOT NULL</span>,
-    estatus    <span class="kw">ENUM</span>(<span class="str">'pendiente'</span>,<span class="str">'enviado'</span>,<span class="str">'entregado'</span>,<span class="str">'cancelado'</span>) <span class="kw">DEFAULT</span> <span class="str">'pendiente'</span>,
-    id_cliente <span class="kw">INT NOT NULL</span>, id_dir <span class="kw">INT NOT NULL</span>,
-    <span class="kw">FOREIGN KEY</span>(id_cliente) <span class="kw">REFERENCES</span> CLIENTE(id_cliente),
-    <span class="kw">FOREIGN KEY</span>(id_dir)     <span class="kw">REFERENCES</span> DIRECCION(id_dir)
-);
-<span class="kw">CREATE TABLE</span> DETALLE_ORDEN (
-    id_orden <span class="kw">INT NOT NULL</span>, id_prod <span class="kw">INT NOT NULL</span>,
-    cantidad        <span class="kw">INT NOT NULL CHECK</span>(cantidad > <span class="num">0</span>),
-    precio_unitario <span class="kw">DECIMAL</span>(<span class="num">10</span>,<span class="num">2</span>) <span class="kw">NOT NULL</span>,
-    <span class="kw">PRIMARY KEY</span>(id_orden, id_prod),
-    <span class="kw">FOREIGN KEY</span>(id_orden) <span class="kw">REFERENCES</span> ORDEN(id_orden),
-    <span class="kw">FOREIGN KEY</span>(id_prod)  <span class="kw">REFERENCES</span> PRODUCTO(id_prod)
-);</pre></div>
+      <h3>Anatomía de un CREATE TABLE</h3>
+      <pre><span class="kw">CREATE TABLE</span> nombre_tabla (
+    columna1   <span class="ty">TIPO</span>   [restricciones de columna],
+    columna2   <span class="ty">TIPO</span>   [restricciones de columna],
+    ...
+    [restricciones de tabla: PRIMARY KEY, FOREIGN KEY, UNIQUE]
+);</pre>
+      <p>Cada columna se define con un <strong>nombre</strong>, un <strong>tipo de dato</strong> y, opcionalmente, una o más <strong>restricciones</strong>. Las restricciones que involucran varias columnas o que son llaves se suelen declarar al final, como restricciones de tabla.</p>
     </section>
 
+    <!-- ═══ RESTRICCIONES ═══ -->
+    <section id="restricciones">
+      <div class="section-label"><span class="dot"></span>05 · Teoría</div>
+      <h2>Restricciones (constraints)</h2>
+      <p>Las restricciones son las <strong>reglas de integridad</strong> que el SGBD vigilará por nosotros. Son el corazón de esta semana: aquí es donde el diseño deja de ser "una tabla con columnas" y se convierte en una base de datos confiable.</p>
+      <table>
+        <tr><th>Restricción</th><th>Garantiza que…</th></tr>
+        <tr><td><code>PRIMARY KEY</code></td><td>La columna identifica de forma única cada fila y no puede repetirse ni ser nula.</td></tr>
+        <tr><td><code>AUTO_INCREMENT</code></td><td>El SGBD genera automáticamente el siguiente número (ideal para IDs).</td></tr>
+        <tr><td><code>NOT NULL</code></td><td>La columna siempre debe tener un valor (no se admite vacío).</td></tr>
+        <tr><td><code>UNIQUE</code></td><td>No se repiten valores en esa columna (ej. correo, RFC).</td></tr>
+        <tr><td><code>DEFAULT</code></td><td>Si no se indica valor al insertar, se usa uno por defecto.</td></tr>
+        <tr><td><code>CHECK</code></td><td>El valor cumple una condición (ej. <code>edad >= 0</code>).</td></tr>
+        <tr><td><code>FOREIGN KEY</code></td><td>El valor existe en la tabla referenciada — implementa las <strong>relaciones</strong> del modelo ER.</td></tr>
+      </table>
+      <h3>La FOREIGN KEY: las relaciones del ER hechas SQL</h3>
+      <p>Cuando en su diagrama una entidad se relacionaba con otra (ej. un <em>alumno pertenece a una carrera</em>), esa relación se implementa con una <strong>llave foránea</strong>. Además podemos indicar qué pasa al borrar o actualizar el registro padre:</p>
+      <table>
+        <tr><th>Acción referencial</th><th>Significado</th></tr>
+        <tr><td><code>ON DELETE RESTRICT</code></td><td>Impide borrar el padre si tiene hijos (es lo más seguro por defecto).</td></tr>
+        <tr><td><code>ON DELETE CASCADE</code></td><td>Al borrar el padre, borra también automáticamente sus hijos.</td></tr>
+        <tr><td><code>ON DELETE SET NULL</code></td><td>Al borrar el padre, deja la FK del hijo en <code>NULL</code>.</td></tr>
+        <tr><td><code>ON UPDATE CASCADE</code></td><td>Si cambia la llave del padre, propaga el cambio a los hijos.</td></tr>
+      </table>
+    </section>
+
+    <!-- ═══ ALTER / DROP ═══ -->
+    <section id="alter">
+      <div class="section-label"><span class="dot"></span>06 · Teoría</div>
+      <h2>ALTER TABLE, DROP y TRUNCATE</h2>
+      <p>El diseño casi nunca queda perfecto al primer intento. <code class="inline">ALTER TABLE</code> nos permite <strong>modificar la estructura</strong> de una tabla ya creada sin tener que borrarla.</p>
+      <pre><span class="cm">-- Agregar una columna</span>
+<span class="kw">ALTER TABLE</span> alumno <span class="kw">ADD COLUMN</span> telefono <span class="ty">VARCHAR</span>(15);
+
+<span class="cm">-- Cambiar el tipo o las restricciones de una columna</span>
+<span class="kw">ALTER TABLE</span> alumno <span class="kw">MODIFY COLUMN</span> nombre <span class="ty">VARCHAR</span>(120) <span class="kw">NOT NULL</span>;
+
+<span class="cm">-- Eliminar una columna</span>
+<span class="kw">ALTER TABLE</span> alumno <span class="kw">DROP COLUMN</span> telefono;
+
+<span class="cm">-- Agregar una llave foránea despues de crear la tabla</span>
+<span class="kw">ALTER TABLE</span> alumno
+    <span class="kw">ADD CONSTRAINT</span> fk_alumno_carrera
+    <span class="kw">FOREIGN KEY</span> (id_carrera) <span class="kw">REFERENCES</span> carrera(id_carrera);</pre>
+      <h3>Eliminar estructuras</h3>
+      <table>
+        <tr><th>Comando</th><th>Qué elimina</th><th>¿Recuperable?</th></tr>
+        <tr><td><code>DROP TABLE alumno;</code></td><td>La tabla completa: estructura + datos.</td><td>No</td></tr>
+        <tr><td><code>DROP DATABASE escuela;</code></td><td>Toda la base de datos.</td><td>No</td></tr>
+        <tr><td><code>TRUNCATE TABLE alumno;</code></td><td>Todos los datos, pero conserva la estructura.</td><td>No</td></tr>
+        <tr><td><code>DELETE FROM alumno;</code></td><td>Filas (DML, no DDL); puede filtrarse con WHERE.</td><td>Sí (con transacción)</td></tr>
+      </table>
+      <div class="warn">
+        <span class="label">⚠ Cuidado</span>
+        <code class="inline">DROP</code> y <code class="inline">TRUNCATE</code> no piden confirmación y no se pueden deshacer fácilmente. En clase trabajamos sobre bases de prueba, pero en producción un <code class="inline">DROP</code> mal escrito es un desastre.
+      </div>
+    </section>
+
+    <!-- ═══ EJEMPLOS ═══ -->
+    <section id="ejemplos">
+      <div class="section-label"><span class="dot"></span>07 · Ejemplos demostrativos</div>
+      <h2>Ejemplos resueltos</h2>
+
+      <h3>Ejemplo 1 — Tabla ALUMNO completa</h3>
+      <p>Retomamos la entidad <strong>ALUMNO</strong> que vimos en la Semana 1, ahora con todas sus restricciones. Observen cómo cada decisión refleja una regla del negocio.</p>
+      <pre><span class="kw">CREATE TABLE</span> alumno (
+    id_alumno     <span class="ty">INT</span>           <span class="kw">AUTO_INCREMENT</span>,
+    matricula     <span class="ty">CHAR</span>(10)      <span class="kw">NOT NULL</span> <span class="kw">UNIQUE</span>,
+    nombre        <span class="ty">VARCHAR</span>(100)  <span class="kw">NOT NULL</span>,
+    correo        <span class="ty">VARCHAR</span>(120)  <span class="kw">NOT NULL</span> <span class="kw">UNIQUE</span>,
+    fecha_nac     <span class="ty">DATE</span>,
+    promedio      <span class="ty">DECIMAL</span>(4,2)  <span class="kw">DEFAULT</span> 0.00,
+    activo        <span class="ty">BOOLEAN</span>       <span class="kw">DEFAULT</span> <span class="kw">TRUE</span>,
+    <span class="kw">PRIMARY KEY</span> (id_alumno)
+);</pre>
+      <ul>
+        <li><code class="inline">id_alumno</code> es la PK artificial con <code class="inline">AUTO_INCREMENT</code>: el sistema asigna el número.</li>
+        <li><code class="inline">matricula</code> y <code class="inline">correo</code> son <code class="inline">UNIQUE</code>: no pueden repetirse entre alumnos.</li>
+        <li><code class="inline">promedio</code> usa <code class="inline">DECIMAL(4,2)</code> (rango 0.00–99.99) con valor por defecto 0.</li>
+      </ul>
+
+      <h3>Ejemplo 2 — Relación 1:N (CARRERA → ALUMNO)</h3>
+      <p>Una carrera tiene muchos alumnos; cada alumno pertenece a una carrera. Esa relación del ER se vuelve una FK.</p>
+      <pre><span class="kw">CREATE TABLE</span> carrera (
+    id_carrera    <span class="ty">INT</span>           <span class="kw">AUTO_INCREMENT</span>,
+    nombre        <span class="ty">VARCHAR</span>(80)   <span class="kw">NOT NULL</span> <span class="kw">UNIQUE</span>,
+    <span class="kw">PRIMARY KEY</span> (id_carrera)
+);
+
+<span class="kw">CREATE TABLE</span> alumno (
+    id_alumno     <span class="ty">INT</span>           <span class="kw">AUTO_INCREMENT</span>,
+    matricula     <span class="ty">CHAR</span>(10)      <span class="kw">NOT NULL</span> <span class="kw">UNIQUE</span>,
+    nombre        <span class="ty">VARCHAR</span>(100)  <span class="kw">NOT NULL</span>,
+    id_carrera    <span class="ty">INT</span>           <span class="kw">NOT NULL</span>,
+    <span class="kw">PRIMARY KEY</span> (id_alumno),
+    <span class="kw">FOREIGN KEY</span> (id_carrera)
+        <span class="kw">REFERENCES</span> carrera(id_carrera)
+        <span class="kw">ON DELETE</span> <span class="kw">RESTRICT</span>
+        <span class="kw">ON UPDATE</span> <span class="kw">CASCADE</span>
+);</pre>
+      <div class="note">
+        <span class="label">Orden importa</span>
+        La tabla referenciada (<code class="inline">carrera</code>) debe crearse <strong>antes</strong> que la que la referencia (<code class="inline">alumno</code>), o MySQL no encontrará la tabla destino de la FK.
+      </div>
+
+      <h3>Ejemplo 3 — Corregir el diseño con ALTER</h3>
+      <p>Supongamos que ya creamos <code class="inline">alumno</code> pero olvidamos el correo y la FK. Lo arreglamos sin borrar la tabla:</p>
+      <pre><span class="kw">ALTER TABLE</span> alumno <span class="kw">ADD COLUMN</span> correo <span class="ty">VARCHAR</span>(120) <span class="kw">NOT NULL</span> <span class="kw">UNIQUE</span>;
+
+<span class="kw">ALTER TABLE</span> alumno
+    <span class="kw">ADD CONSTRAINT</span> fk_alumno_carrera
+    <span class="kw">FOREIGN KEY</span> (id_carrera) <span class="kw">REFERENCES</span> carrera(id_carrera);</pre>
+    </section>
+
+    <!-- ═══ PRACTICA ═══ -->
     <section id="practica">
-      <div class="section-label"><span class="dot"></span>06 · Práctica</div>
-      <h2>Ejercicio Integrador — Tu Proyecto Final</h2>
-      <p>El ejercicio de esta semana <strong>es</strong> el trabajo de la Evidencia 2. Aplica el pipeline completo sobre el sistema de tu equipo:</p>
-      <div class="ejercicio integrador" data-num="Ejercicio integrador">
-        <h4>Pipeline completo para el proyecto del equipo</h4>
-        <ol style="margin-top:12px; padding-left:20px;">
-          <li style="margin-bottom:10px;"><strong>Análisis:</strong> 3–5 líneas: qué hace el sistema, quiénes son los usuarios, qué datos gestiona.</li>
-          <li style="margin-bottom:10px;"><strong>Entidades y atributos:</strong> lista todas (mín. 5) con atributos clasificados por tipo.</li>
-          <li style="margin-bottom:10px;"><strong>Relaciones:</strong> cardinalidad y regla de transformación (R1–R5) para cada relación.</li>
-          <li style="margin-bottom:10px;"><strong>Diagrama ER:</strong> draw.io completo (Crow's Foot o Chen).</li>
-          <li style="margin-bottom:10px;"><strong>Esquema relacional:</strong> notación textual TABLA(<u>pk</u>, atribs, fk*).</li>
-          <li><strong>Diccionario:</strong> ficha completa de al menos 3 tablas del sistema.</li>
-        </ol>
+      <div class="section-label"><span class="dot"></span>08 · Ejercicios de práctica</div>
+      <h2>Práctica en XAMPP</h2>
+
+      <div class="practice">
+        <span class="tag">Práctica 1 · Individual</span>
+        <h3>Materializa tu Evidencia 2</h3>
+        <p>Toma el esquema relacional y el diccionario de datos de <strong>tu propio proyecto de la Evidencia 2</strong> y constrúyelo en XAMPP.</p>
+        <ul>
+          <li>Crea la base de datos con <code class="inline">utf8mb4</code>.</li>
+          <li>Crea todas las tablas con sus tipos de dato correctos (justificados por el dominio del diccionario).</li>
+          <li>Define todas las <code class="inline">PRIMARY KEY</code> y las <code class="inline">FOREIGN KEY</code> que correspondan a las relaciones de tu diagrama.</li>
+          <li><strong>Entregable:</strong> archivo <code class="inline">.sql</code> con todo el DDL + captura de phpMyAdmin mostrando las tablas creadas.</li>
+        </ul>
       </div>
-      <div class="card yellow">
-        <h4>⏰ Recordatorio — Evidencia 2</h4>
-        <p>Presentación oral y entrega del documento escrito este <strong>viernes 29 de Mayo</strong>. Revisa el checklist antes de presentar.</p>
+
+      <div class="practice">
+        <span class="tag">Práctica 2 · Equipos de 2</span>
+        <h3>Sistema de biblioteca (incluye relación N:M)</h3>
+        <p>Diseña y crea en XAMPP la base <code class="inline">biblioteca</code> con estas tablas:</p>
+        <ul>
+          <li><code class="inline">autor</code>, <code class="inline">libro</code>, <code class="inline">socio</code> y <code class="inline">prestamo</code>.</li>
+          <li>Un libro puede tener varios autores y un autor varios libros (<strong>N:M</strong>): resuélvelo con la tabla intermedia <code class="inline">libro_autor</code> con FK a ambas.</li>
+          <li><code class="inline">prestamo</code> debe registrar qué socio se llevó qué libro, con <code class="inline">fecha_prestamo</code> y <code class="inline">fecha_devolucion</code>.</li>
+          <li>Aplica <code class="inline">NOT NULL</code>, <code class="inline">UNIQUE</code> (ej. ISBN) y al menos un <code class="inline">DEFAULT</code> donde tenga sentido.</li>
+        </ul>
+      </div>
+
+      <div class="practice">
+        <span class="tag">Práctica 3 · Reto</span>
+        <h3>Cirugía con ALTER TABLE</h3>
+        <p>Se te entregará un script con un diseño defectuoso ya creado. Sin borrar las tablas, corrígelo usando solo <code class="inline">ALTER TABLE</code>:</p>
+        <ul>
+          <li>Cambiar una columna de <code class="inline">FLOAT</code> a <code class="inline">DECIMAL(8,2)</code> para un precio.</li>
+          <li>Agregar una <code class="inline">FOREIGN KEY</code> que faltaba.</li>
+          <li>Agregar la restricción <code class="inline">UNIQUE</code> a una columna de correo.</li>
+          <li>Documentar en comentarios qué problema resolvía cada cambio.</li>
+        </ul>
       </div>
     </section>
 
-    <section id="evidencia">
-      <div class="section-label"><span class="dot"></span>07 · Checklist Evidencia 2</div>
-      <h2>Lista de Verificación — Evidencia 2</h2>
-      <h3>Documento escrito</h3>
-      <ul class="checklist">
-        <li>Portada con nombre del sistema, integrantes, matrícula y fecha.</li>
-        <li>Descripción del sistema (mín. media cuartilla).</li>
-        <li>Justificación: por qué necesita BD (mín. 3 argumentos).</li>
-        <li>Al menos 5 entidades con sus atributos principales.</li>
-        <li>Relaciones entre entidades con cardinalidad indicada.</li>
-        <li>Tecnología elegida (Web o Python) con justificación.</li>
-        <li>Lista de módulos del sistema (mín. 4 módulos).</li>
-        <li>Hoja de registro firmada por todos los integrantes.</li>
-      </ul>
-      <h3>Presentación oral (10 minutos)</h3>
-      <ul class="checklist">
-        <li>Nombre del sistema y descripción breve.</li>
-        <li>Justificación oral: por qué necesita base de datos.</li>
-        <li>Entidades principales mostradas (diagrama o pizarrón).</li>
-        <li>Tecnología elegida y razón de la elección.</li>
-        <li>Módulos del sistema presentados.</li>
-        <li>División de trabajo entre integrantes.</li>
-        <li>Todos los integrantes participan en la exposición.</li>
-      </ul>
-    </section>
-
+    <!-- ═══ RESUMEN ═══ -->
     <section id="resumen">
-      <div class="section-label"><span class="dot"></span>08 · Cierre Unidad II</div>
-      <h2>Cierre de la Unidad II</h2>
+      <div class="section-label"><span class="dot"></span>09 · Cierre</div>
+      <h2>Resumen de la semana</h2>
       <div class="summary-grid">
-        <div class="summary-item"><div class="icon">🔷</div><div class="val">Modelo ER</div><div class="label">Entidades · 6 tipos de atributos · Relaciones · Cardinalidad</div></div>
-        <div class="summary-item"><div class="icon">📐</div><div class="val">5 Reglas</div><div class="label">Transformación completa ER → Relacional</div></div>
-        <div class="summary-item"><div class="icon">🍃</div><div class="val">NoSQL</div><div class="label">4 tipos · ACID vs BASE · cuándo usar cada uno</div></div>
-        <div class="summary-item"><div class="icon">📖</div><div class="val">Diccionario</div><div class="label">Ficha por tabla: nombre · tipo · restricciones · default · descripción</div></div>
-        <div class="summary-item"><div class="icon">⚠️</div><div class="val">4 Errores</div><div class="label">FK lado equivocado · N:M sin intermedia · multivaluado en col. · orden DDL</div></div>
-        <div class="summary-item"><div class="icon">🔄</div><div class="val">Pipeline</div><div class="label">Análisis → ER → Relacional → Diccionario → DDL</div></div>
+        <div class="summary-item"><div class="icon">🧰</div><div class="label">Herramienta</div><div class="val">XAMPP · phpMyAdmin</div></div>
+        <div class="summary-item"><div class="icon">📚</div><div class="label">Sublenguaje</div><div class="val">DDL</div></div>
+        <div class="summary-item"><div class="icon">🏗</div><div class="label">Comandos</div><div class="val">CREATE · ALTER · DROP</div></div>
+        <div class="summary-item"><div class="icon">🔒</div><div class="label">Restricciones</div><div class="val">PK · FK · UNIQUE · NOT NULL</div></div>
+        <div class="summary-item"><div class="icon">📦</div><div class="label">Entregable</div><div class="val">Script .sql + capturas</div></div>
+        <div class="summary-item"><div class="icon">➡️</div><div class="label">Próxima (U3)</div><div class="val">Normalización 1FN–3FN</div></div>
       </div>
-      <div class="card purple" style="margin-top:24px;">
-        <h4>📚 Siguiente: Unidad III (Semana 6 — 08–12 Junio)</h4>
-        <p>Construcción de bases de datos: comparativa de SGBD, <strong>normalización completa (1FN, 2FN, 3FN)</strong> e implementación física con DDL avanzado. Asegúrate de tener instalado <strong>MySQL Workbench</strong>.</p>
+      <div class="note" style="margin-top:22px;">
+        <span class="label">Conexión con la Unidad III</span>
+        Ya tienen tablas reales. La siguiente pregunta natural es: ¿está bien diseñada esa estructura o tiene datos redundantes que generarán problemas al insertar, actualizar y borrar? Eso lo responde la <strong>normalización</strong>, con la que abrimos la Unidad III.
       </div>
     </section>
 
   </main>
 </div>
 </div>
+
+<footer>
+  Bases de Datos · ITIID · Universidad Politécnica de Tapachula · Periodo Mayo–Agosto 2026 · Grupo 3°A<br>
+  Elaboró: Christian Jaime García Aquino · Semana 5 (01–05 Junio 2026)
+</footer>
+
 </body>
 </html>
