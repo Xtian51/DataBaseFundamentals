@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BDD · Semana 6 — Normalización</title>
+<title>BDD · Semana 7 — Poblar la base de datos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,40 +15,17 @@
     --border: #30363d;
     --text: #e6edf3;
     --muted: #8b949e;
-    --accent: #2dd4bf;   /* teal */
-    --accent2: #5eead4;  /* teal claro */
-    --accent-soft: rgba(45,212,191,0.12);
+    --accent: #f472b6;
+    --accent2: #f9a8d4;
+    --accent-soft: rgba(244,114,182,0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.65;
-    font-size: 15px;
-  }
-  header {
-    background:
-      radial-gradient(1200px 400px at 80% -20%, rgba(45,212,191,0.18), transparent 60%),
-      linear-gradient(180deg, #11151c 0%, var(--bg) 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 48px 32px 40px;
-  }
-  .badge {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; letter-spacing: 0.5px;
-    color: var(--accent2);
-    border: 1px solid var(--border);
-    background: var(--accent-soft);
-    padding: 5px 12px; border-radius: 999px; margin-bottom: 18px;
-  }
-  header h1 {
-    font-family: 'Syne', sans-serif; font-weight: 800;
-    font-size: 38px; line-height: 1.1; letter-spacing: -0.5px; max-width: 900px;
-  }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.65; font-size: 15px; }
+  header { background: radial-gradient(1200px 400px at 80% -20%, rgba(244,114,182,0.18), transparent 60%), linear-gradient(180deg, #11151c 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); padding: 48px 32px 40px; }
+  .badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.5px; color: var(--accent2); border: 1px solid var(--border); background: var(--accent-soft); padding: 5px 12px; border-radius: 999px; margin-bottom: 18px; }
+  header h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 38px; line-height: 1.1; letter-spacing: -0.5px; max-width: 900px; }
   header h1 span { color: var(--accent); }
-  header > p { color: var(--muted); margin-top: 12px; font-size: 16px; max-width: 780px; }
+  header > p { color: var(--muted); margin-top: 12px; font-size: 16px; max-width: 790px; }
   .pills { margin-top: 22px; display: flex; gap: 10px; flex-wrap: wrap; }
   .pill { font-size: 13px; color: var(--text); background: var(--surface); border: 1px solid var(--border); padding: 7px 13px; border-radius: 8px; }
 
@@ -69,32 +46,32 @@
   strong { color: var(--text); }
   code.inline { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--surface2); color: var(--accent2); padding: 2px 6px; border-radius: 5px; }
 
-  .definition, .note, .warn {
-    border-radius: 10px; padding: 16px 18px; margin: 18px 0; border: 1px solid var(--border);
-  }
-  .definition { background: var(--accent-soft); border-color: rgba(45,212,191,0.35); }
+  .definition, .note, .warn { border-radius: 10px; padding: 16px 18px; margin: 18px 0; border: 1px solid var(--border); }
+  .definition { background: var(--accent-soft); border-color: rgba(244,114,182,0.35); }
   .definition .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent2); margin-bottom: 6px; }
   .note { background: var(--surface); }
   .note .label, .warn .label { font-weight: 700; font-size: 13px; margin-bottom: 4px; display: block; }
   .note .label { color: var(--accent2); }
   .warn { background: rgba(210,153,34,0.10); border-color: rgba(210,153,34,0.40); }
   .warn .label { color: #e3b341; }
+  .rule { background: linear-gradient(135deg, rgba(244,114,182,0.16), rgba(244,114,182,0.04)); border: 1px solid rgba(244,114,182,0.45); border-radius: 10px; padding: 16px 18px; margin: 18px 0; }
+  .rule .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent2); display: block; margin-bottom: 6px; }
+  .rule p { margin: 0; color: var(--text); font-size: 15.5px; }
 
   pre { background: #161b22 !important; color: #e6edf3 !important; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; overflow-x: auto; margin: 16px 0; white-space: pre; line-height: 1.55; }
   pre .kw { color: #ff7b72; font-weight: 500; }
   pre .ty { color: #79c0ff; }
+  pre .st { color: #a5d6ff; }
   pre .cm { color: #8b949e; font-style: italic; }
+  pre .er { color: #ffa198; font-weight: 600; }
+  pre .ok { color: #56d364; }
 
   table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13.5px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   th { background: #21262d !important; color: #e6edf3 !important; text-align: left; padding: 10px 13px; font-weight: 700; border-bottom: 1px solid var(--border); }
   td { background: #0d1117 !important; padding: 9px 13px; border-bottom: 1px solid var(--border); color: #cdd5de; vertical-align: top; }
   tr:nth-child(even) td { background: #161b22 !important; }
   td code, th code { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 12.5px; }
-  td.bad { color: #ff7b72 !important; }
-  td.key { color: #5eead4 !important; font-weight: 700; }
   .tbl-cap { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin: 18px 0 -8px; text-transform: uppercase; letter-spacing: 1px; }
-
-  .fnbadge { display: inline-flex; align-items: center; justify-content: center; min-width: 56px; height: 28px; padding: 0 10px; border-radius: 7px; background: var(--accent-soft); border: 1px solid rgba(45,212,191,0.4); color: var(--accent2); font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 14px; margin-right: 10px; }
 
   .practice { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 10px; padding: 18px 20px; margin: 18px 0; }
   .practice .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent2); text-transform: uppercase; letter-spacing: 1px; }
@@ -108,10 +85,6 @@
   .summary-item .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
   .summary-item .val { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text); margin-top: 4px; }
 
-  .mnemo { background: linear-gradient(135deg, rgba(45,212,191,0.14), rgba(45,212,191,0.04)); border: 1px solid rgba(45,212,191,0.4); border-radius: 12px; padding: 22px 24px; margin: 22px 0; text-align: center; }
-  .mnemo p { font-family: 'Syne', sans-serif; font-size: 19px; color: var(--text); margin: 0; line-height: 1.5; }
-  .mnemo .src { font-size: 12px; color: var(--muted); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
-
   footer { border-top: 1px solid var(--border); padding: 24px 32px; text-align: center; color: var(--muted); font-size: 12.5px; }
   @media (max-width: 820px) { .layout { grid-template-columns: 1fr; } nav.toc { position: static; } header h1 { font-size: 30px; } }
 </style>
@@ -120,12 +93,12 @@
 
 <header>
   <div class="badge">ITIID · Bases de Datos · UPTap</div>
-  <h1>Semana 6 — <span>Normalización: diseñar sin redundancia</span></h1>
-  <p>Unidad III · Construcción — Ya tienen tablas reales construidas con DDL. Ahora aprenderán a evaluar y rediseñar esas estructuras para eliminar la redundancia y las anomalías, aplicando las formas normales 1FN, 2FN y 3FN.</p>
+  <h1>Semana 7 — <span>Poblar la base de datos</span></h1>
+  <p>Unidad III · Construcción — Ya creamos las tablas (Semana 5) y las diseñamos sin redundancia (Semana 6). Ahora les damos vida con datos usando INSERT, UPDATE y DELETE, cuidando que cada operación respete la integridad del diseño.</p>
   <div class="pills">
-    <span class="pill">📅 08 – 12 Junio 2026</span>
+    <span class="pill">📅 15 – 19 Junio 2026</span>
     <span class="pill">⏱ 5 horas</span>
-    <span class="pill">🎯 Aplicar 1FN, 2FN y 3FN a un diseño</span>
+    <span class="pill">🎯 Cargar y modificar datos respetando restricciones</span>
   </div>
 </header>
 
@@ -134,242 +107,232 @@
 
   <nav class="toc">
     <h4>Contenido</h4>
-    <a href="#porque">⚠️ ¿Por qué normalizar?</a>
-    <a href="#df">🔗 Dependencias funcionales</a>
-    <a href="#fn1">1️⃣ Primera Forma Normal</a>
-    <a href="#fn2">2️⃣ Segunda Forma Normal</a>
-    <a href="#fn3">3️⃣ Tercera Forma Normal</a>
-    <a href="#integrador">🧪 Ejemplo integrador</a>
-    <a href="#bcnf">➕ Más allá: BCNF</a>
+    <a href="#puente">🔗 ¿Dónde estamos?</a>
+    <a href="#dml">📚 DML vs DDL</a>
+    <a href="#insert">➕ INSERT</a>
+    <a href="#orden">🧩 El orden importa</a>
+    <a href="#update">✏️ UPDATE</a>
+    <a href="#delete">🗑️ DELETE</a>
+    <a href="#errores">🔧 Errores de integridad</a>
+    <a href="#tx">🔒 Transacciones</a>
+    <a href="#ejemplos">💡 Ejemplos</a>
     <a href="#practica">🏋 Práctica</a>
     <a href="#resumen">✅ Resumen</a>
   </nav>
 
   <main>
 
-    <!-- ¿POR QUÉ NORMALIZAR? -->
-    <section id="porque">
-      <div class="section-label"><span class="dot"></span>00 · Motivación</div>
-      <h2>¿Por qué normalizar?</h2>
-      <p>Imaginen que registramos las inscripciones de los alumnos en una sola tabla "gigante" que lo guarda todo junto:</p>
-      <div class="tbl-cap">Tabla INSCRIPCION (sin normalizar)</div>
-      <table>
-        <tr><th>matricula</th><th>nombre_alumno</th><th>id_curso</th><th>nombre_curso</th><th>profesor</th><th>calif</th></tr>
-        <tr><td class="key">A01</td><td>Ana López</td><td class="key">C10</td><td>Bases de Datos</td><td>García</td><td>9.0</td></tr>
-        <tr><td class="key">A01</td><td>Ana López</td><td class="key">C20</td><td>Redes</td><td>Pérez</td><td>8.5</td></tr>
-        <tr><td class="key">A02</td><td>Beto Ramírez</td><td class="key">C10</td><td>Bases de Datos</td><td>García</td><td>7.8</td></tr>
-      </table>
-      <p>Esta tabla <strong>funciona</strong>, pero la información se repite: "Ana López" y "Bases de Datos" aparecen varias veces. Esa redundancia genera tres problemas clásicos, las <strong>anomalías</strong>:</p>
-      <table>
-        <tr><th>Anomalía</th><th>Problema</th></tr>
-        <tr><td><strong>de inserción</strong></td><td>No puedo registrar un curso nuevo hasta que algún alumno se inscriba en él (necesitaría una matrícula).</td></tr>
-        <tr><td><strong>de actualización</strong></td><td>Si "Bases de Datos" cambia de nombre, debo editar muchas filas; si olvido una, los datos quedan inconsistentes.</td></tr>
-        <tr><td><strong>de eliminación</strong></td><td>Si Beto cancela su única inscripción y borro la fila, pierdo también el dato de que el curso C10 existe.</td></tr>
-      </table>
+    <section id="puente">
+      <div class="section-label"><span class="dot"></span>00 · Contexto</div>
+      <h2>¿Dónde estamos?</h2>
+      <p>Una base de datos vacía no le sirve a nadie. Tras construir el esquema y normalizarlo, el siguiente paso es <strong>poblarlo</strong>: insertar registros, corregirlos cuando cambian y eliminarlos cuando ya no aplican. Para eso usamos tres instrucciones del lenguaje de manipulación de datos (DML): <code class="inline">INSERT</code>, <code class="inline">UPDATE</code> y <code class="inline">DELETE</code>.</p>
+      <p>La diferencia con lo anterior es importante: ahora la base ya tiene <strong>llaves foráneas y restricciones</strong> vigilando. Cargar datos en una base normalizada no es escribir filas al azar; hay que respetar el orden y las reglas, o el SGBD rechazará la operación.</p>
       <div class="definition">
-        <div class="label">Normalización</div>
-        <p style="margin:0;">Proceso de organizar las columnas y tablas de una base de datos para <strong>minimizar la redundancia</strong> y evitar las anomalías, descomponiendo una tabla en varias relacionadas mediante una serie de reglas llamadas <strong>formas normales</strong>.</p>
+        <div class="label">Meta de la semana</div>
+        <p style="margin:0;">Cargar y mantener datos en un esquema normalizado <strong>sin violar la integridad</strong>: respetar el orden de inserción, las llaves únicas, los valores obligatorios y las relaciones entre tablas.</p>
       </div>
     </section>
 
-    <!-- DEPENDENCIAS FUNCIONALES -->
-    <section id="df">
-      <div class="section-label"><span class="dot"></span>01 · Fundamento</div>
-      <h2>Dependencias funcionales</h2>
-      <p>Antes de las formas normales necesitamos una herramienta: la <strong>dependencia funcional</strong>. Es la base teórica de toda la normalización.</p>
-      <div class="definition">
-        <div class="label">Dependencia funcional  ·  A → B</div>
-        <p style="margin:0;">Decimos que <strong>B depende funcionalmente de A</strong> (se escribe <code class="inline">A → B</code>) si cada valor de A determina un único valor de B. Es decir: si conozco A, conozco B sin ambigüedad.</p>
-      </div>
-      <p>Ejemplos en la tabla anterior:</p>
-      <ul>
-        <li><code class="inline">matricula → nombre_alumno</code> &nbsp;(cada matrícula identifica a un solo alumno)</li>
-        <li><code class="inline">id_curso → nombre_curso, profesor</code> &nbsp;(cada curso tiene un nombre y un profesor)</li>
-        <li><code class="inline">(matricula, id_curso) → calif</code> &nbsp;(la calificación depende de la combinación alumno + curso)</li>
-      </ul>
-      <p>Dos tipos de dependencia serán claves para las siguientes reglas:</p>
+    <section id="dml">
+      <div class="section-label"><span class="dot"></span>01 · Recordatorio</div>
+      <h2>DML vs DDL</h2>
+      <p>En la Semana 5 vimos que SQL tiene sublenguajes. El <strong>DDL</strong> define la estructura; el <strong>DML</strong> trabaja con los datos que viven dentro de esa estructura.</p>
       <table>
-        <tr><th>Tipo</th><th>Qué es</th><th>La ataca…</th></tr>
-        <tr><td><strong>Parcial</strong></td><td>Un atributo depende solo de <em>parte</em> de una clave compuesta.</td><td>2FN</td></tr>
-        <tr><td><strong>Transitiva</strong></td><td>Un atributo no clave depende de <em>otro atributo no clave</em> (A → B → C).</td><td>3FN</td></tr>
+        <tr><th>Sublenguaje</th><th>Comandos</th><th>Actúa sobre…</th></tr>
+        <tr><td>DDL</td><td><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code></td><td>La estructura (tablas, columnas, restricciones).</td></tr>
+        <tr><td><strong>DML</strong></td><td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>SELECT</code></td><td>Los datos (las filas).</td></tr>
       </table>
-    </section>
-
-    <!-- 1FN -->
-    <section id="fn1">
-      <div class="section-label"><span class="dot"></span>02 · Regla</div>
-      <h2><span class="fnbadge">1FN</span>Primera Forma Normal</h2>
-      <div class="definition">
-        <div class="label">Una tabla está en 1FN si…</div>
-        <p style="margin:0;">Cada celda contiene un <strong>valor atómico</strong> (indivisible), no hay <strong>grupos repetitivos</strong> ni listas dentro de una columna, y existe una <strong>llave primaria</strong> que identifica cada fila.</p>
-      </div>
-      <p>Esta tabla <strong>viola</strong> la 1FN: la columna <code class="inline">telefonos</code> guarda varios valores en una celda.</p>
-      <div class="tbl-cap">ALUMNO — viola 1FN</div>
-      <table>
-        <tr><th>matricula</th><th>nombre</th><th>telefonos</th></tr>
-        <tr><td class="key">A01</td><td>Ana López</td><td class="bad">961-111, 962-222</td></tr>
-        <tr><td class="key">A02</td><td>Beto Ramírez</td><td class="bad">963-333</td></tr>
-      </table>
-      <p>Para llevarla a 1FN, sacamos los teléfonos a su propia tabla, con un valor por fila:</p>
-      <div class="tbl-cap">ALUMNO (1FN)  +  TELEFONO (1FN)</div>
-      <table>
-        <tr><th>matricula</th><th>nombre</th></tr>
-        <tr><td class="key">A01</td><td>Ana López</td></tr>
-        <tr><td class="key">A02</td><td>Beto Ramírez</td></tr>
-      </table>
-      <table>
-        <tr><th>id_tel</th><th>matricula</th><th>numero</th></tr>
-        <tr><td class="key">1</td><td>A01</td><td>961-111</td></tr>
-        <tr><td class="key">2</td><td>A01</td><td>962-222</td></tr>
-        <tr><td class="key">3</td><td>A02</td><td>963-333</td></tr>
-      </table>
-    </section>
-
-    <!-- 2FN -->
-    <section id="fn2">
-      <div class="section-label"><span class="dot"></span>03 · Regla</div>
-      <h2><span class="fnbadge">2FN</span>Segunda Forma Normal</h2>
-      <div class="definition">
-        <div class="label">Una tabla está en 2FN si…</div>
-        <p style="margin:0;">Está en <strong>1FN</strong> y, además, todo atributo que no es clave depende de la <strong>clave completa</strong>, no solo de una parte de ella. La 2FN solo es un riesgo cuando la llave primaria es <strong>compuesta</strong>.</p>
-      </div>
-      <p>Volvamos a la inscripción. Su clave es compuesta: <code class="inline">(matricula, id_curso)</code>. Observen las dependencias:</p>
-      <div class="tbl-cap">INSCRIPCION (1FN, pero viola 2FN)</div>
-      <table>
-        <tr><th>matricula</th><th>id_curso</th><th>nombre_alumno</th><th>nombre_curso</th><th>calif</th></tr>
-        <tr><td class="key">A01</td><td class="key">C10</td><td class="bad">Ana López</td><td class="bad">Bases de Datos</td><td>9.0</td></tr>
-        <tr><td class="key">A01</td><td class="key">C20</td><td class="bad">Ana López</td><td class="bad">Redes</td><td>8.5</td></tr>
-      </table>
-      <ul>
-        <li><code class="inline">nombre_alumno</code> depende solo de <code class="inline">matricula</code> → <strong>dependencia parcial</strong>.</li>
-        <li><code class="inline">nombre_curso</code> depende solo de <code class="inline">id_curso</code> → <strong>dependencia parcial</strong>.</li>
-        <li><code class="inline">calif</code> depende de la clave completa → correcto.</li>
-      </ul>
-      <p>Para llegar a 2FN, separamos cada dependencia parcial a su propia tabla:</p>
-      <div class="tbl-cap">ALUMNO  ·  CURSO  ·  INSCRIPCION (2FN)</div>
-      <table>
-        <tr><th>matricula (PK)</th><th>nombre_alumno</th></tr>
-        <tr><td class="key">A01</td><td>Ana López</td></tr>
-      </table>
-      <table>
-        <tr><th>id_curso (PK)</th><th>nombre_curso</th></tr>
-        <tr><td class="key">C10</td><td>Bases de Datos</td></tr>
-      </table>
-      <table>
-        <tr><th>matricula (PK,FK)</th><th>id_curso (PK,FK)</th><th>calif</th></tr>
-        <tr><td class="key">A01</td><td class="key">C10</td><td>9.0</td></tr>
-      </table>
-    </section>
-
-    <!-- 3FN -->
-    <section id="fn3">
-      <div class="section-label"><span class="dot"></span>04 · Regla</div>
-      <h2><span class="fnbadge">3FN</span>Tercera Forma Normal</h2>
-      <div class="definition">
-        <div class="label">Una tabla está en 3FN si…</div>
-        <p style="margin:0;">Está en <strong>2FN</strong> y ningún atributo no clave depende de <strong>otro atributo no clave</strong> (no hay <strong>dependencias transitivas</strong>). Todo atributo debe depender directamente de la llave.</p>
-      </div>
-      <p>Supongamos que la tabla CURSO también guarda el nombre del profesor:</p>
-      <div class="tbl-cap">CURSO (2FN, pero viola 3FN)</div>
-      <table>
-        <tr><th>id_curso (PK)</th><th>nombre_curso</th><th>id_profesor</th><th>nombre_profesor</th></tr>
-        <tr><td class="key">C10</td><td>Bases de Datos</td><td>P1</td><td class="bad">García</td></tr>
-        <tr><td class="key">C20</td><td>Redes</td><td>P2</td><td class="bad">Pérez</td></tr>
-      </table>
-      <p>Aquí <code class="inline">nombre_profesor</code> no depende de <code class="inline">id_curso</code>, sino de <code class="inline">id_profesor</code>, que tampoco es clave: <code class="inline">id_curso → id_profesor → nombre_profesor</code>. Eso es una <strong>dependencia transitiva</strong>. La rompemos sacando al profesor a su tabla:</p>
-      <div class="tbl-cap">CURSO  ·  PROFESOR (3FN)</div>
-      <table>
-        <tr><th>id_curso (PK)</th><th>nombre_curso</th><th>id_profesor (FK)</th></tr>
-        <tr><td class="key">C10</td><td>Bases de Datos</td><td>P1</td></tr>
-      </table>
-      <table>
-        <tr><th>id_profesor (PK)</th><th>nombre_profesor</th></tr>
-        <tr><td class="key">P1</td><td>García</td></tr>
-      </table>
-      <div class="mnemo">
-        <p>“Cada atributo depende de <strong>la clave</strong>, de <strong>toda la clave</strong><br>y de <strong>nada más que la clave</strong>.”</p>
-        <div class="src">// la clave → 1FN · toda la clave → 2FN · nada más que la clave → 3FN</div>
-      </div>
-    </section>
-
-    <!-- EJEMPLO INTEGRADOR -->
-    <section id="integrador">
-      <div class="section-label"><span class="dot"></span>05 · Ejemplo integrador</div>
-      <h2>De 0 a 3FN, paso a paso</h2>
-      <p>Reunimos todo. Partimos de una sola tabla desnormalizada y la llevamos hasta 3FN aplicando las reglas en orden.</p>
-      <h3>Punto de partida (sin normalizar)</h3>
-      <div class="tbl-cap">INSCRIPCION_FULL</div>
-      <table>
-        <tr><th>matricula</th><th>nombre_alumno</th><th>cursos_y_calif</th><th>id_profesor</th><th>nombre_profesor</th></tr>
-        <tr><td class="key">A01</td><td>Ana López</td><td class="bad">C10:9.0, C20:8.5</td><td>P1, P2</td><td>García, Pérez</td></tr>
-      </table>
-      <ol>
-        <li><strong>1FN</strong> — separamos el grupo repetitivo <code class="inline">cursos_y_calif</code>: una fila por (alumno, curso).</li>
-        <li><strong>2FN</strong> — sacamos <code class="inline">nombre_alumno</code> a ALUMNO y <code class="inline">nombre_curso</code> a CURSO (dependencias parciales de la clave compuesta).</li>
-        <li><strong>3FN</strong> — sacamos al profesor a su tabla (dependencia transitiva vía <code class="inline">id_profesor</code>).</li>
-      </ol>
-      <h3>Esquema final en 3FN</h3>
-      <pre><span class="cm">-- Cinco relaciones limpias, sin redundancia</span>
-ALUMNO     (<span class="ty">matricula</span> PK, nombre_alumno)
-PROFESOR   (<span class="ty">id_profesor</span> PK, nombre_profesor)
-CURSO      (<span class="ty">id_curso</span> PK, nombre_curso, id_profesor FK)
-INSCRIPCION(<span class="ty">matricula</span> PK/FK, <span class="ty">id_curso</span> PK/FK, calif)</pre>
       <div class="note">
-        <span class="label">Conexión con la Semana 5</span>
-        Una vez normalizado el diseño en papel, cada una de estas relaciones se construye con un <code class="inline">CREATE TABLE</code> y sus <code class="inline">FOREIGN KEY</code>, tal como practicamos en XAMPP.
+        <span class="label">Nota</span>
+        <code class="inline">SELECT</code> también es DML, pero como es todo un mundo (consultas, filtros, JOINs) lo dedicaremos a la Unidad IV. Esta semana nos enfocamos en las tres operaciones que <em>modifican</em> los datos.
       </div>
     </section>
 
-    <!-- BCNF -->
-    <section id="bcnf">
-      <div class="section-label"><span class="dot"></span>06 · Para ir más allá</div>
-      <h2>Un paso más: BCNF</h2>
-      <p>Existen formas normales más estrictas. La más conocida es la <strong>Forma Normal de Boyce-Codd (BCNF)</strong>, un refuerzo de la 3FN que exige que <em>toda</em> dependencia funcional tenga como determinante una superclave. En la práctica, llevar un diseño a <strong>3FN suele ser suficiente</strong> para la mayoría de los sistemas; mencionamos BCNF para que sepan que el camino continúa.</p>
+    <section id="insert">
+      <div class="section-label"><span class="dot"></span>02 · Teoría</div>
+      <h2>INSERT — agregar filas</h2>
+      <h3>Forma básica</h3>
+      <pre><span class="kw">INSERT INTO</span> cliente (id_cliente, nombre_cliente)
+<span class="kw">VALUES</span> (<span class="st">'C01'</span>, <span class="st">'Ana López'</span>);</pre>
+      <p>Buena práctica: <strong>nombrar siempre las columnas</strong>. Así tu INSERT sigue funcionando aunque después se agregue o reordene una columna.</p>
+      <h3>Insertar varias filas a la vez</h3>
+      <pre><span class="kw">INSERT INTO</span> producto (id_producto, nombre_producto, precio)
+<span class="kw">VALUES</span>
+    (<span class="st">'P10'</span>, <span class="st">'Teclado mecánico'</span>, 350.00),
+    (<span class="st">'P11'</span>, <span class="st">'Mouse inalámbrico'</span>, 180.00),
+    (<span class="st">'P12'</span>, <span class="st">'Monitor 24 pulgadas'</span>, 2500.00);</pre>
+      <h3>Columnas con AUTO_INCREMENT o DEFAULT</h3>
+      <p>Si una columna es <code class="inline">AUTO_INCREMENT</code> o tiene <code class="inline">DEFAULT</code>, simplemente no la incluyas y el SGBD pondrá el valor por ti:</p>
+      <pre><span class="cm">-- id_venta es AUTO_INCREMENT; fecha tiene DEFAULT (CURDATE())</span>
+<span class="kw">INSERT INTO</span> venta (id_cliente) <span class="kw">VALUES</span> (<span class="st">'C01'</span>);</pre>
+      <div class="note">
+        <span class="label">Tip</span>
+        Para copiar datos de otra tabla puedes usar <code class="inline">INSERT INTO ... SELECT ...</code>, que inserta el resultado de una consulta. Lo retomaremos cuando veamos SELECT.
+      </div>
+    </section>
+
+    <section id="orden">
+      <div class="section-label"><span class="dot"></span>03 · Integridad</div>
+      <h2>El orden importa: primero los padres</h2>
+      <p>Cuando una tabla tiene una llave foránea, no puedes insertar un "hijo" si su "padre" todavía no existe. El SGBD lo rechazará para proteger la integridad referencial.</p>
+      <pre><span class="cm">-- ERROR: el cliente C09 no existe todavía</span>
+<span class="kw">INSERT INTO</span> venta (id_cliente) <span class="kw">VALUES</span> (<span class="st">'C09'</span>);
+<span class="er">ERROR 1452: Cannot add or update a child row:
+a foreign key constraint fails</span></pre>
+      <p>La regla es simple: <strong>inserta primero las tablas referenciadas</strong> (las del lado "uno") y después las que las referencian.</p>
+      <div class="rule">
+        <span class="label">Orden de carga para el esquema de ventas</span>
+        <p><code class="inline">cliente</code> y <code class="inline">producto</code> &nbsp;→&nbsp; <code class="inline">venta</code> &nbsp;→&nbsp; <code class="inline">detalle_venta</code></p>
+      </div>
+    </section>
+
+    <section id="update">
+      <div class="section-label"><span class="dot"></span>04 · Teoría</div>
+      <h2>UPDATE — modificar filas</h2>
+      <pre><span class="cm">-- Subir 10% el precio de un producto</span>
+<span class="kw">UPDATE</span> producto
+<span class="kw">SET</span> precio = precio * 1.10
+<span class="kw">WHERE</span> id_producto = <span class="st">'P10'</span>;</pre>
+      <p>Puedes actualizar varias columnas a la vez separándolas por comas:</p>
+      <pre><span class="kw">UPDATE</span> cliente
+<span class="kw">SET</span> nombre_cliente = <span class="st">'Ana López Ruiz'</span>,
+    correo = <span class="st">'ana.lr@correo.com'</span>
+<span class="kw">WHERE</span> id_cliente = <span class="st">'C01'</span>;</pre>
       <div class="warn">
-        <span class="label">⚠ Equilibrio</span>
-        Normalizar demasiado puede fragmentar la base en muchas tablas y obligar a consultas con muchos <code class="inline">JOIN</code>. El objetivo no es "máxima normalización", sino un diseño <strong>correcto y mantenible</strong>: en general, 3FN.
+        <span class="label">⚠ Regla de oro</span>
+        Un <code class="inline">UPDATE</code> <strong>sin</strong> <code class="inline">WHERE</code> modifica <strong>todas</strong> las filas de la tabla. Antes de ejecutar, pregúntate: "¿qué filas quiero tocar?" y confírmalo en el <code class="inline">WHERE</code>.
       </div>
     </section>
 
-    <!-- PRÁCTICA -->
+    <section id="delete">
+      <div class="section-label"><span class="dot"></span>05 · Teoría</div>
+      <h2>DELETE — eliminar filas</h2>
+      <pre><span class="cm">-- Borrar una venta específica</span>
+<span class="kw">DELETE FROM</span> venta
+<span class="kw">WHERE</span> folio = 1003;</pre>
+      <p>Igual que con UPDATE, <strong>siempre con <code class="inline">WHERE</code></strong>: un <code class="inline">DELETE FROM tabla;</code> sin condición vacía la tabla entera.</p>
+      <h3>¿Y las filas relacionadas?</h3>
+      <p>Aquí entran en juego las acciones referenciales que definiste en la llave foránea:</p>
+      <table>
+        <tr><th>Si la FK tiene…</th><th>Al borrar el padre…</th></tr>
+        <tr><td><code>ON DELETE RESTRICT</code></td><td>El SGBD impide el borrado mientras existan hijos. Primero borra los hijos.</td></tr>
+        <tr><td><code>ON DELETE CASCADE</code></td><td>Se borran automáticamente también los hijos (p. ej. borrar una venta borra su detalle).</td></tr>
+      </table>
+      <div class="note">
+        <span class="label">DELETE vs TRUNCATE</span>
+        <code class="inline">DELETE</code> borra filas según el <code class="inline">WHERE</code> y se puede revertir dentro de una transacción; <code class="inline">TRUNCATE</code> vacía toda la tabla de golpe y reinicia el contador AUTO_INCREMENT.
+      </div>
+    </section>
+
+    <section id="errores">
+      <div class="section-label"><span class="dot"></span>06 · Diagnóstico</div>
+      <h2>Errores de integridad al cargar</h2>
+      <p>Cuando un INSERT o UPDATE viola una restricción, el SGBD lo rechaza con un mensaje. Aprender a leerlos es media batalla ganada:</p>
+      <table>
+        <tr><th>Mensaje (resumido)</th><th>Qué significa</th><th>Cómo resolver</th></tr>
+        <tr><td><code>a foreign key constraint fails</code></td><td>El valor de la FK no existe en la tabla padre.</td><td>Inserta primero el padre, o corrige el id.</td></tr>
+        <tr><td><code>Duplicate entry ... for key</code></td><td>Repetiste un valor de PK o de una columna UNIQUE.</td><td>Usa un valor distinto; revisa si ya existe.</td></tr>
+        <tr><td><code>Column ... cannot be null</code></td><td>Dejaste vacía una columna NOT NULL.</td><td>Proporciona un valor para esa columna.</td></tr>
+        <tr><td><code>Data too long for column</code></td><td>El texto excede el tamaño del VARCHAR.</td><td>Acorta el dato o amplía la columna.</td></tr>
+        <tr><td><code>Incorrect ... value</code></td><td>El dato no corresponde al tipo (p. ej. texto en un INT).</td><td>Corrige el valor al tipo esperado.</td></tr>
+      </table>
+      <div class="note">
+        <span class="label">Mentalidad</span>
+        Estos errores no son un fastidio: son tu diseño <em>defendiéndose</em>. Cada rechazo evita que entren datos corruptos a la base.
+      </div>
+    </section>
+
+    <section id="tx">
+      <div class="section-label"><span class="dot"></span>07 · Cargas seguras</div>
+      <h2>Transacciones: todo o nada</h2>
+      <p>Cuando insertas varios registros relacionados (una venta y su detalle, por ejemplo), quieres que se guarden <strong>todos o ninguno</strong>. Una transacción agrupa varias operaciones en una sola unidad:</p>
+      <pre><span class="kw">START TRANSACTION</span>;
+
+<span class="kw">INSERT INTO</span> venta (id_cliente) <span class="kw">VALUES</span> (<span class="st">'C01'</span>);
+<span class="kw">INSERT INTO</span> detalle_venta (folio, id_producto, cantidad)
+<span class="kw">VALUES</span> (<span class="kw">LAST_INSERT_ID</span>(), <span class="st">'P10'</span>, 2);
+
+<span class="kw">COMMIT</span>;   <span class="cm">-- confirma los cambios</span>
+<span class="cm">-- ROLLBACK; deshace todo si algo salió mal</span></pre>
+      <p>Si entre los dos INSERT ocurriera un error, un <code class="inline">ROLLBACK</code> deja la base como estaba, sin ventas a medias.</p>
+    </section>
+
+    <section id="ejemplos">
+      <div class="section-label"><span class="dot"></span>08 · Ejemplos demostrativos</div>
+      <h2>Ejemplos resueltos</h2>
+      <p>Usamos el esquema normalizado de la Semana 6: <code class="inline">cliente</code>, <code class="inline">producto</code>, <code class="inline">venta</code> y <code class="inline">detalle_venta</code>.</p>
+
+      <h3>Ejemplo 1 — Poblar en el orden correcto</h3>
+      <pre><span class="cm">-- 1) Primero los padres</span>
+<span class="kw">INSERT INTO</span> cliente <span class="kw">VALUES</span> (<span class="st">'C01'</span>, <span class="st">'Ana López'</span>), (<span class="st">'C02'</span>, <span class="st">'Beto Ramírez'</span>);
+<span class="kw">INSERT INTO</span> producto <span class="kw">VALUES</span>
+    (<span class="st">'P10'</span>, <span class="st">'Teclado mecánico'</span>, 350.00),
+    (<span class="st">'P11'</span>, <span class="st">'Mouse inalámbrico'</span>, 180.00);
+
+<span class="cm">-- 2) Luego la venta (referencia a cliente)</span>
+<span class="kw">INSERT INTO</span> venta (folio, fecha, id_cliente)
+<span class="kw">VALUES</span> (1001, <span class="st">'2026-06-15'</span>, <span class="st">'C01'</span>);
+
+<span class="cm">-- 3) Por último el detalle (referencia a venta y producto)</span>
+<span class="kw">INSERT INTO</span> detalle_venta <span class="kw">VALUES</span>
+    (1001, <span class="st">'P10'</span>, 2),
+    (1001, <span class="st">'P11'</span>, 1);</pre>
+
+      <h3>Ejemplo 2 — Actualizar y borrar</h3>
+      <pre><span class="cm">-- El teclado sube de precio</span>
+<span class="kw">UPDATE</span> producto <span class="kw">SET</span> precio = 399.00 <span class="kw">WHERE</span> id_producto = <span class="st">'P10'</span>;
+
+<span class="cm">-- Se cancela la venta 1001: con ON DELETE CASCADE,</span>
+<span class="cm">-- su detalle se borra automáticamente</span>
+<span class="kw">DELETE FROM</span> venta <span class="kw">WHERE</span> folio = 1001;</pre>
+
+      <h3>Ejemplo 3 — Leer un error y corregirlo</h3>
+      <pre><span class="cm">-- Intentamos vender un producto que no existe</span>
+<span class="kw">INSERT INTO</span> detalle_venta <span class="kw">VALUES</span> (1001, <span class="st">'P99'</span>, 1);
+<span class="er">ERROR 1452: a foreign key constraint fails</span>
+
+<span class="cm">-- Solución: primero damos de alta el producto P99</span>
+<span class="kw">INSERT INTO</span> producto <span class="kw">VALUES</span> (<span class="st">'P99'</span>, <span class="st">'Audífonos'</span>, 450.00);
+<span class="kw">INSERT INTO</span> detalle_venta <span class="kw">VALUES</span> (1001, <span class="st">'P99'</span>, 1);  <span class="ok">-- OK</span></pre>
+    </section>
+
     <section id="practica">
-      <div class="section-label"><span class="dot"></span>07 · Ejercicios de práctica</div>
+      <div class="section-label"><span class="dot"></span>09 · Ejercicios de práctica</div>
       <h2>Práctica</h2>
 
       <div class="practice">
-        <span class="tag">Ejercicio 1 · Diagnóstico</span>
-        <h3>Detecta las anomalías</h3>
-        <p>Se te dará una tabla desnormalizada de una clínica (paciente, médico, cita, especialidad). Identifica por escrito una anomalía de inserción, una de actualización y una de eliminación, y señala qué redundancia las causa.</p>
+        <span class="tag">Ejercicio 1 · Carga ordenada</span>
+        <h3>Puebla el esquema de streaming</h3>
+        <p>Sobre la base de la Práctica 4 (<code class="inline">artista</code>, <code class="inline">usuario</code>, <code class="inline">cancion</code>, <code class="inline">playlist</code>, <code class="inline">cancion_playlist</code>), escribe los INSERT necesarios para cargar 3 artistas, 4 usuarios, 6 canciones, 3 playlists y al menos 8 filas en la tabla intermedia. Respeta el orden de inserción y entrégalo como un solo script.</p>
       </div>
 
       <div class="practice">
-        <span class="tag">Ejercicio 2 · Normalización guiada</span>
-        <h3>Lleva la tabla a 3FN</h3>
-        <p>Parte de una tabla <code class="inline">VENTA(folio, fecha, id_cliente, nombre_cliente, id_producto, nombre_producto, precio, cantidad)</code>. Lista las dependencias funcionales y descompón la tabla hasta 3FN, indicando en cada paso qué regla aplicaste y por qué.</p>
+        <span class="tag">Ejercicio 2 · Mantenimiento</span>
+        <h3>Modifica y elimina con criterio</h3>
+        <p>Escribe sentencias para: (a) subir 5% las reproducciones de todas las canciones de un artista; (b) cambiar el plan de un usuario a "premium"; (c) eliminar una playlist y comprobar qué ocurre con sus filas en la tabla intermedia. Explica el resultado de (c) según la acción referencial.</p>
       </div>
 
       <div class="practice">
-        <span class="tag">Ejercicio 3 · Del papel a XAMPP</span>
-        <h3>Construye tu diseño normalizado</h3>
-        <p>Toma tu esquema en 3FN del ejercicio 2 y materialízalo en XAMPP con <code class="inline">CREATE TABLE</code> y sus <code class="inline">FOREIGN KEY</code>. Inserta datos de ejemplo que demuestren que ya no hay redundancia.</p>
+        <span class="tag">Ejercicio 3 · Diagnóstico</span>
+        <h3>Caza el error de integridad</h3>
+        <p>Se te dará un script con cuatro INSERT que fallan. Identifica qué restricción viola cada uno (FK, PK/UNIQUE, NOT NULL o tipo de dato), explica el mensaje de error y corrige la sentencia para que se ejecute.</p>
       </div>
     </section>
 
-    <!-- RESUMEN -->
     <section id="resumen">
-      <div class="section-label"><span class="dot"></span>08 · Cierre</div>
+      <div class="section-label"><span class="dot"></span>10 · Cierre</div>
       <h2>Resumen de la semana</h2>
       <div class="summary-grid">
-        <div class="summary-item"><div class="icon">1️⃣</div><div class="label">1FN</div><div class="val">Valores atómicos</div></div>
-        <div class="summary-item"><div class="icon">2️⃣</div><div class="label">2FN</div><div class="val">Sin dep. parciales</div></div>
-        <div class="summary-item"><div class="icon">3️⃣</div><div class="label">3FN</div><div class="val">Sin dep. transitivas</div></div>
-        <div class="summary-item"><div class="icon">🎯</div><div class="label">Objetivo</div><div class="val">Eliminar redundancia</div></div>
-        <div class="summary-item"><div class="icon">📦</div><div class="label">Entregable</div><div class="val">Diseño 3FN + .sql</div></div>
-        <div class="summary-item"><div class="icon">➡️</div><div class="label">Próxima</div><div class="val">DML: poblar datos</div></div>
+        <div class="summary-item"><div class="icon">➕</div><div class="label">INSERT</div><div class="val">Agregar filas</div></div>
+        <div class="summary-item"><div class="icon">✏️</div><div class="label">UPDATE</div><div class="val">Modificar (con WHERE)</div></div>
+        <div class="summary-item"><div class="icon">🗑️</div><div class="label">DELETE</div><div class="val">Eliminar (con WHERE)</div></div>
+        <div class="summary-item"><div class="icon">🧩</div><div class="label">Orden</div><div class="val">Padres antes que hijos</div></div>
+        <div class="summary-item"><div class="icon">🔒</div><div class="label">Seguridad</div><div class="val">Transacciones</div></div>
+        <div class="summary-item"><div class="icon">➡️</div><div class="label">Próxima (U4)</div><div class="val">SELECT: consultar datos</div></div>
       </div>
       <div class="note" style="margin-top:22px;">
         <span class="label">Lo esencial</span>
-        Normalizar no es un trámite: es lo que hace que una base de datos sea confiable. 1FN, 2FN y 3FN son tres preguntas sucesivas sobre <em>de qué depende cada atributo</em>. Si cada atributo depende de la clave, de toda la clave y de nada más que la clave, su diseño está sano.
+        Poblar una base normalizada es un acto de disciplina: inserta los padres antes que los hijos, pon siempre un <code class="inline">WHERE</code> en tus UPDATE y DELETE, y trata cada error de integridad como una alarma útil. Con la base ya construida, diseñada y poblada, en la Unidad IV aprenderemos a <strong>preguntarle</strong> cosas con SELECT.
       </div>
     </section>
 
@@ -379,7 +342,7 @@ INSCRIPCION(<span class="ty">matricula</span> PK/FK, <span class="ty">id_curso</
 
 <footer>
   Bases de Datos · ITIID · Universidad Politécnica de Tapachula · Periodo Mayo–Agosto 2026 · Grupo 3°A<br>
-  Elaboró: Christian Jaime García Aquino · Semana 6 (08–12 Junio 2026)
+  Elaboró: Christian Jaime García Aquino · Semana 7 (15–19 Junio 2026)
 </footer>
 
 </body>
