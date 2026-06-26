@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BDD · Semana 7 — Poblar la base de datos</title>
+<title>BDD · Semana 8 — Índices y Vistas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -15,13 +15,13 @@
     --border: #30363d;
     --text: #e6edf3;
     --muted: #8b949e;
-    --accent: #f472b6;
-    --accent2: #f9a8d4;
-    --accent-soft: rgba(244,114,182,0.12);
+    --accent: #fbbf24;
+    --accent2: #fcd34d;
+    --accent-soft: rgba(251,191,36,0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.65; font-size: 15px; }
-  header { background: radial-gradient(1200px 400px at 80% -20%, rgba(244,114,182,0.18), transparent 60%), linear-gradient(180deg, #11151c 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); padding: 48px 32px 40px; }
+  header { background: radial-gradient(1200px 400px at 80% -20%, rgba(251,191,36,0.18), transparent 60%), linear-gradient(180deg, #11151c 0%, var(--bg) 100%); border-bottom: 1px solid var(--border); padding: 48px 32px 40px; }
   .badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.5px; color: var(--accent2); border: 1px solid var(--border); background: var(--accent-soft); padding: 5px 12px; border-radius: 999px; margin-bottom: 18px; }
   header h1 { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 38px; line-height: 1.1; letter-spacing: -0.5px; max-width: 900px; }
   header h1 span { color: var(--accent); }
@@ -47,16 +47,13 @@
   code.inline { font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--surface2); color: var(--accent2); padding: 2px 6px; border-radius: 5px; }
 
   .definition, .note, .warn { border-radius: 10px; padding: 16px 18px; margin: 18px 0; border: 1px solid var(--border); }
-  .definition { background: var(--accent-soft); border-color: rgba(244,114,182,0.35); }
+  .definition { background: var(--accent-soft); border-color: rgba(251,191,36,0.35); }
   .definition .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent2); margin-bottom: 6px; }
   .note { background: var(--surface); }
   .note .label, .warn .label { font-weight: 700; font-size: 13px; margin-bottom: 4px; display: block; }
   .note .label { color: var(--accent2); }
   .warn { background: rgba(210,153,34,0.10); border-color: rgba(210,153,34,0.40); }
   .warn .label { color: #e3b341; }
-  .rule { background: linear-gradient(135deg, rgba(244,114,182,0.16), rgba(244,114,182,0.04)); border: 1px solid rgba(244,114,182,0.45); border-radius: 10px; padding: 16px 18px; margin: 18px 0; }
-  .rule .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent2); display: block; margin-bottom: 6px; }
-  .rule p { margin: 0; color: var(--text); font-size: 15.5px; }
 
   pre { background: #161b22 !important; color: #e6edf3 !important; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; overflow-x: auto; margin: 16px 0; white-space: pre; line-height: 1.55; }
   pre .kw { color: #ff7b72; font-weight: 500; }
@@ -71,7 +68,6 @@
   td { background: #0d1117 !important; padding: 9px 13px; border-bottom: 1px solid var(--border); color: #cdd5de; vertical-align: top; }
   tr:nth-child(even) td { background: #161b22 !important; }
   td code, th code { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-size: 12.5px; }
-  .tbl-cap { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin: 18px 0 -8px; text-transform: uppercase; letter-spacing: 1px; }
 
   .practice { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 10px; padding: 18px 20px; margin: 18px 0; }
   .practice .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent2); text-transform: uppercase; letter-spacing: 1px; }
@@ -93,12 +89,12 @@
 
 <header>
   <div class="badge">ITIID · Bases de Datos · UPTap</div>
-  <h1>Semana 7 — <span>Poblar la base de datos</span></h1>
-  <p>Unidad III · Construcción — Ya creamos las tablas (Semana 5) y las diseñamos sin redundancia (Semana 6). Ahora les damos vida con datos usando INSERT, UPDATE y DELETE, cuidando que cada operación respete la integridad del diseño.</p>
+  <h1>Semana 8 — <span>Índices y Vistas</span></h1>
+  <p>Unidad III · Construcción — La base ya está construida, normalizada y poblada. Esta semana la hacemos rápida con índices, fácil de consultar y más segura con vistas, y más robusta con restricciones CHECK. Son objetos del esquema que todo desarrollador usa en el día a día.</p>
   <div class="pills">
-    <span class="pill">📅 15 – 19 Junio 2026</span>
+    <span class="pill">📅 22 – 26 Junio 2026</span>
     <span class="pill">⏱ 5 horas</span>
-    <span class="pill">🎯 Cargar y modificar datos respetando restricciones</span>
+    <span class="pill">🎯 Optimizar, abstraer y validar el esquema</span>
   </div>
 </header>
 
@@ -108,13 +104,11 @@
   <nav class="toc">
     <h4>Contenido</h4>
     <a href="#puente">🔗 ¿Dónde estamos?</a>
-    <a href="#dml">📚 DML vs DDL</a>
-    <a href="#insert">➕ INSERT</a>
-    <a href="#orden">🧩 El orden importa</a>
-    <a href="#update">✏️ UPDATE</a>
-    <a href="#delete">🗑️ DELETE</a>
-    <a href="#errores">🔧 Errores de integridad</a>
-    <a href="#tx">🔒 Transacciones</a>
+    <a href="#problema">🐌 El problema</a>
+    <a href="#indices">⚡ Índices</a>
+    <a href="#costo">⚖️ El costo de indexar</a>
+    <a href="#vistas">🪟 Vistas</a>
+    <a href="#check">🛡️ Restricción CHECK</a>
     <a href="#ejemplos">💡 Ejemplos</a>
     <a href="#practica">🏋 Práctica</a>
     <a href="#resumen">✅ Resumen</a>
@@ -125,214 +119,192 @@
     <section id="puente">
       <div class="section-label"><span class="dot"></span>00 · Contexto</div>
       <h2>¿Dónde estamos?</h2>
-      <p>Una base de datos vacía no le sirve a nadie. Tras construir el esquema y normalizarlo, el siguiente paso es <strong>poblarlo</strong>: insertar registros, corregirlos cuando cambian y eliminarlos cuando ya no aplican. Para eso usamos tres instrucciones del lenguaje de manipulación de datos (DML): <code class="inline">INSERT</code>, <code class="inline">UPDATE</code> y <code class="inline">DELETE</code>.</p>
-      <p>La diferencia con lo anterior es importante: ahora la base ya tiene <strong>llaves foráneas y restricciones</strong> vigilando. Cargar datos en una base normalizada no es escribir filas al azar; hay que respetar el orden y las reglas, o el SGBD rechazará la operación.</p>
+      <p>Ya recorrimos el ciclo completo: construimos el esquema (Semana 5), lo diseñamos sin redundancia (Semana 6) y lo llenamos de datos (Semana 7). La base ya funciona. Pero "funcionar" no basta en un sistema real: también debe ser <strong>rápida</strong>, <strong>fácil de consultar con seguridad</strong> y <strong>difícil de corromper</strong>.</p>
+      <p>Para eso existen tres herramientas que viven junto a las tablas, como objetos del esquema: los <strong>índices</strong> (velocidad), las <strong>vistas</strong> (abstracción y seguridad) y las restricciones <strong>CHECK</strong> (validación). Son, además, conceptos que un desarrollador toca prácticamente a diario.</p>
       <div class="definition">
         <div class="label">Meta de la semana</div>
-        <p style="margin:0;">Cargar y mantener datos en un esquema normalizado <strong>sin violar la integridad</strong>: respetar el orden de inserción, las llaves únicas, los valores obligatorios y las relaciones entre tablas.</p>
+        <p style="margin:0;">Acelerar las búsquedas con índices bien elegidos, simplificar y proteger el acceso con vistas, y reforzar la integridad del dominio con restricciones CHECK.</p>
       </div>
     </section>
 
-    <section id="dml">
-      <div class="section-label"><span class="dot"></span>01 · Recordatorio</div>
-      <h2>DML vs DDL</h2>
-      <p>En la Semana 5 vimos que SQL tiene sublenguajes. El <strong>DDL</strong> define la estructura; el <strong>DML</strong> trabaja con los datos que viven dentro de esa estructura.</p>
+    <section id="problema">
+      <div class="section-label"><span class="dot"></span>01 · Motivación</div>
+      <h2>El problema: búsquedas lentas</h2>
+      <p>Imagina una tabla <code class="inline">socio</code> con 500 000 filas y esta consulta:</p>
+      <pre><span class="kw">SELECT</span> * <span class="kw">FROM</span> socio <span class="kw">WHERE</span> nombre = <span class="st">'Ana López'</span>;</pre>
+      <p>Sin ayuda, el SGBD revisa <strong>fila por fila</strong> hasta encontrarla: medio millón de comparaciones. A esto se le llama <em>recorrido completo de tabla</em> (full table scan) y es lento.</p>
+      <div class="definition">
+        <div class="label">La analogía del libro</div>
+        <p style="margin:0;">Buscar sin índice es como buscar una palabra leyendo un libro de 800 páginas desde el inicio. Un <strong>índice</strong> es como el índice alfabético al final del libro: vas directo a la página correcta. La base de datos hace lo mismo.</p>
+      </div>
+    </section>
+
+    <section id="indices">
+      <div class="section-label"><span class="dot"></span>02 · Índices</div>
+      <h2>Índices — velocidad de búsqueda</h2>
+      <p>Un <strong>índice</strong> es una estructura auxiliar que el SGBD mantiene para localizar filas rápidamente por el valor de una o más columnas, sin recorrer toda la tabla.</p>
+      <div class="note">
+        <span class="label">Ya tienes índices sin saberlo</span>
+        Cada <code class="inline">PRIMARY KEY</code> y cada columna <code class="inline">UNIQUE</code> crean un índice automáticamente. Por eso buscar por la llave primaria siempre es rápido.
+      </div>
+      <h3>Crear un índice</h3>
+      <pre><span class="cm">-- Acelera las búsquedas y los JOIN por id_instructor</span>
+<span class="kw">CREATE INDEX</span> idx_clase_instructor
+<span class="kw">ON</span> clase (id_instructor);</pre>
+      <h3>Índice compuesto (varias columnas)</h3>
+      <pre><span class="cm">-- Útil para consultas que filtran por las dos columnas juntas</span>
+<span class="kw">CREATE INDEX</span> idx_socio_nombre
+<span class="kw">ON</span> socio (apellido, nombre);</pre>
+      <p>En un índice compuesto <strong>el orden importa</strong>: <code class="inline">(apellido, nombre)</code> sirve para buscar por apellido, o por apellido + nombre, pero no para buscar solo por nombre.</p>
+      <h3>¿Qué columnas conviene indexar?</h3>
+      <ul>
+        <li>Las que aparecen seguido en <code class="inline">WHERE</code>.</li>
+        <li>Las usadas en <code class="inline">JOIN</code> (típicamente las llaves foráneas).</li>
+        <li>Las usadas en <code class="inline">ORDER BY</code> sobre tablas grandes.</li>
+      </ul>
+      <div class="note">
+        <span class="label">Ver si una consulta usa el índice</span>
+        Antepón <code class="inline">EXPLAIN</code> a tu consulta (<code class="inline">EXPLAIN SELECT ...</code>). Si en la columna <code class="inline">key</code> aparece tu índice, lo está usando; si dice <code class="inline">NULL</code>, está haciendo recorrido completo.
+      </div>
+    </section>
+
+    <section id="costo">
+      <div class="section-label"><span class="dot"></span>03 · Equilibrio</div>
+      <h2>El costo de indexar</h2>
+      <p>Los índices no son gratis. Aceleran las <strong>lecturas</strong>, pero tienen un precio:</p>
       <table>
-        <tr><th>Sublenguaje</th><th>Comandos</th><th>Actúa sobre…</th></tr>
-        <tr><td>DDL</td><td><code>CREATE</code>, <code>ALTER</code>, <code>DROP</code></td><td>La estructura (tablas, columnas, restricciones).</td></tr>
-        <tr><td><strong>DML</strong></td><td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>, <code>SELECT</code></td><td>Los datos (las filas).</td></tr>
+        <tr><th>Beneficio</th><th>Costo</th></tr>
+        <tr><td>Las consultas <code>SELECT</code> con filtro son mucho más rápidas.</td><td>Ocupan espacio en disco adicional.</td></tr>
+        <tr><td>Aceleran <code>JOIN</code> y <code>ORDER BY</code>.</td><td>Cada <code>INSERT</code>, <code>UPDATE</code> y <code>DELETE</code> es un poco más lento, porque hay que actualizar también el índice.</td></tr>
+      </table>
+      <div class="warn">
+        <span class="label">⚠ Regla práctica</span>
+        No indexes "por si acaso" todas las columnas. Indexa las que realmente se usan para buscar. En una tabla con muchas escrituras, demasiados índices la vuelven lenta para insertar.
+      </div>
+      <pre><span class="cm">-- Eliminar un índice que ya no aporta</span>
+<span class="kw">DROP INDEX</span> idx_socio_nombre <span class="kw">ON</span> socio;</pre>
+    </section>
+
+    <section id="vistas">
+      <div class="section-label"><span class="dot"></span>04 · Vistas</div>
+      <h2>Vistas — consultas guardadas</h2>
+      <div class="definition">
+        <div class="label">Vista (VIEW)</div>
+        <p style="margin:0;">Una <strong>vista</strong> es una consulta guardada que se comporta como una <strong>tabla virtual</strong>. No almacena datos: cada vez que la consultas, ejecuta por debajo su <code class="inline">SELECT</code> sobre las tablas reales.</p>
+      </div>
+      <h3>Crear y usar una vista</h3>
+      <pre><span class="kw">CREATE VIEW</span> vista_inscripciones <span class="kw">AS</span>
+<span class="kw">SELECT</span> s.nombre <span class="kw">AS</span> socio,
+       c.nombre <span class="kw">AS</span> clase,
+       i.fecha_inscripcion
+<span class="kw">FROM</span> inscripcion i
+<span class="kw">JOIN</span> socio s <span class="kw">ON</span> s.id_socio = i.id_socio
+<span class="kw">JOIN</span> clase c <span class="kw">ON</span> c.id_clase = i.id_clase;
+
+<span class="cm">-- Ahora se consulta como si fuera una tabla</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> vista_inscripciones <span class="kw">WHERE</span> clase = <span class="st">'Yoga matutino'</span>;</pre>
+      <h3>¿Para qué sirven?</h3>
+      <table>
+        <tr><th>Uso</th><th>Beneficio</th></tr>
+        <tr><td><strong>Simplificar</strong></td><td>Encapsulan un JOIN complejo: lo escribes una vez y luego consultas la vista con un SELECT simple.</td></tr>
+        <tr><td><strong>Seguridad</strong></td><td>Puedes dar acceso a una vista con solo ciertas columnas/filas, sin exponer la tabla completa (p. ej. ocultar el correo).</td></tr>
+        <tr><td><strong>Abstracción</strong></td><td>Si la estructura de las tablas cambia, ajustas la vista y las aplicaciones que la usan no se enteran.</td></tr>
       </table>
       <div class="note">
         <span class="label">Nota</span>
-        <code class="inline">SELECT</code> también es DML, pero como es todo un mundo (consultas, filtros, JOINs) lo dedicaremos a la Unidad IV. Esta semana nos enfocamos en las tres operaciones que <em>modifican</em> los datos.
+        Algunas vistas permiten <code class="inline">INSERT</code>/<code class="inline">UPDATE</code> (si son simples), pero muchas (las que tienen JOIN o funciones) son de <strong>solo lectura</strong>. Para eliminar una vista: <code class="inline">DROP VIEW vista_inscripciones;</code>
       </div>
     </section>
 
-    <section id="insert">
-      <div class="section-label"><span class="dot"></span>02 · Teoría</div>
-      <h2>INSERT — agregar filas</h2>
-      <h3>Forma básica</h3>
-      <pre><span class="kw">INSERT INTO</span> cliente (id_cliente, nombre_cliente)
-<span class="kw">VALUES</span> (<span class="st">'C01'</span>, <span class="st">'Ana López'</span>);</pre>
-      <p>Buena práctica: <strong>nombrar siempre las columnas</strong>. Así tu INSERT sigue funcionando aunque después se agregue o reordene una columna.</p>
-      <h3>Insertar varias filas a la vez</h3>
-      <pre><span class="kw">INSERT INTO</span> producto (id_producto, nombre_producto, precio)
-<span class="kw">VALUES</span>
-    (<span class="st">'P10'</span>, <span class="st">'Teclado mecánico'</span>, 350.00),
-    (<span class="st">'P11'</span>, <span class="st">'Mouse inalámbrico'</span>, 180.00),
-    (<span class="st">'P12'</span>, <span class="st">'Monitor 24 pulgadas'</span>, 2500.00);</pre>
-      <h3>Columnas con AUTO_INCREMENT o DEFAULT</h3>
-      <p>Si una columna es <code class="inline">AUTO_INCREMENT</code> o tiene <code class="inline">DEFAULT</code>, simplemente no la incluyas y el SGBD pondrá el valor por ti:</p>
-      <pre><span class="cm">-- id_venta es AUTO_INCREMENT; fecha tiene DEFAULT (CURDATE())</span>
-<span class="kw">INSERT INTO</span> venta (id_cliente) <span class="kw">VALUES</span> (<span class="st">'C01'</span>);</pre>
-      <div class="note">
-        <span class="label">Tip</span>
-        Para copiar datos de otra tabla puedes usar <code class="inline">INSERT INTO ... SELECT ...</code>, que inserta el resultado de una consulta. Lo retomaremos cuando veamos SELECT.
-      </div>
-    </section>
+    <section id="check">
+      <div class="section-label"><span class="dot"></span>05 · Integridad</div>
+      <h2>Restricción CHECK — validar el dominio</h2>
+      <p>Ya conoces <code class="inline">NOT NULL</code>, <code class="inline">UNIQUE</code> y <code class="inline">FOREIGN KEY</code>. La restricción <strong>CHECK</strong> agrega una más: obliga a que un valor cumpla una <strong>condición lógica</strong> antes de aceptarlo.</p>
+      <pre><span class="cm">-- Al crear la tabla</span>
+cupo_max <span class="ty">INT</span> <span class="kw">NOT NULL</span> <span class="kw">CHECK</span> (cupo_max &gt; 0),
 
-    <section id="orden">
-      <div class="section-label"><span class="dot"></span>03 · Integridad</div>
-      <h2>El orden importa: primero los padres</h2>
-      <p>Cuando una tabla tiene una llave foránea, no puedes insertar un "hijo" si su "padre" todavía no existe. El SGBD lo rechazará para proteger la integridad referencial.</p>
-      <pre><span class="cm">-- ERROR: el cliente C09 no existe todavía</span>
-<span class="kw">INSERT INTO</span> venta (id_cliente) <span class="kw">VALUES</span> (<span class="st">'C09'</span>);
-<span class="er">ERROR 1452: Cannot add or update a child row:
-a foreign key constraint fails</span></pre>
-      <p>La regla es simple: <strong>inserta primero las tablas referenciadas</strong> (las del lado "uno") y después las que las referencian.</p>
-      <div class="rule">
-        <span class="label">Orden de carga para el esquema de ventas</span>
-        <p><code class="inline">cliente</code> y <code class="inline">producto</code> &nbsp;→&nbsp; <code class="inline">venta</code> &nbsp;→&nbsp; <code class="inline">detalle_venta</code></p>
-      </div>
-    </section>
-
-    <section id="update">
-      <div class="section-label"><span class="dot"></span>04 · Teoría</div>
-      <h2>UPDATE — modificar filas</h2>
-      <pre><span class="cm">-- Subir 10% el precio de un producto</span>
-<span class="kw">UPDATE</span> producto
-<span class="kw">SET</span> precio = precio * 1.10
-<span class="kw">WHERE</span> id_producto = <span class="st">'P10'</span>;</pre>
-      <p>Puedes actualizar varias columnas a la vez separándolas por comas:</p>
-      <pre><span class="kw">UPDATE</span> cliente
-<span class="kw">SET</span> nombre_cliente = <span class="st">'Ana López Ruiz'</span>,
-    correo = <span class="st">'ana.lr@correo.com'</span>
-<span class="kw">WHERE</span> id_cliente = <span class="st">'C01'</span>;</pre>
+<span class="cm">-- O agregarla después con ALTER TABLE</span>
+<span class="kw">ALTER TABLE</span> clase
+<span class="kw">ADD CONSTRAINT</span> chk_cupo <span class="kw">CHECK</span> (cupo_max &gt; 0);</pre>
+      <p>A partir de ahí, un intento de guardar un cupo de cero o negativo será rechazado:</p>
+      <pre><span class="kw">INSERT INTO</span> clase (nombre, cupo_max, id_instructor)
+<span class="kw">VALUES</span> (<span class="st">'Clase fantasma'</span>, 0, 1);
+<span class="er">ERROR 4025: CONSTRAINT `chk_cupo` failed</span></pre>
       <div class="warn">
-        <span class="label">⚠ Regla de oro</span>
-        Un <code class="inline">UPDATE</code> <strong>sin</strong> <code class="inline">WHERE</code> modifica <strong>todas</strong> las filas de la tabla. Antes de ejecutar, pregúntate: "¿qué filas quiero tocar?" y confírmalo en el <code class="inline">WHERE</code>.
+        <span class="label">⚠ Compatibilidad</span>
+        <code class="inline">CHECK</code> se aplica de verdad en MariaDB 10.2+ y MySQL 8.0.16+. En versiones muy antiguas se aceptaba la sintaxis pero se ignoraba. Verifica la versión de tu XAMPP.
       </div>
-    </section>
-
-    <section id="delete">
-      <div class="section-label"><span class="dot"></span>05 · Teoría</div>
-      <h2>DELETE — eliminar filas</h2>
-      <pre><span class="cm">-- Borrar una venta específica</span>
-<span class="kw">DELETE FROM</span> venta
-<span class="kw">WHERE</span> folio = 1003;</pre>
-      <p>Igual que con UPDATE, <strong>siempre con <code class="inline">WHERE</code></strong>: un <code class="inline">DELETE FROM tabla;</code> sin condición vacía la tabla entera.</p>
-      <h3>¿Y las filas relacionadas?</h3>
-      <p>Aquí entran en juego las acciones referenciales que definiste en la llave foránea:</p>
-      <table>
-        <tr><th>Si la FK tiene…</th><th>Al borrar el padre…</th></tr>
-        <tr><td><code>ON DELETE RESTRICT</code></td><td>El SGBD impide el borrado mientras existan hijos. Primero borra los hijos.</td></tr>
-        <tr><td><code>ON DELETE CASCADE</code></td><td>Se borran automáticamente también los hijos (p. ej. borrar una venta borra su detalle).</td></tr>
-      </table>
-      <div class="note">
-        <span class="label">DELETE vs TRUNCATE</span>
-        <code class="inline">DELETE</code> borra filas según el <code class="inline">WHERE</code> y se puede revertir dentro de una transacción; <code class="inline">TRUNCATE</code> vacía toda la tabla de golpe y reinicia el contador AUTO_INCREMENT.
-      </div>
-    </section>
-
-    <section id="errores">
-      <div class="section-label"><span class="dot"></span>06 · Diagnóstico</div>
-      <h2>Errores de integridad al cargar</h2>
-      <p>Cuando un INSERT o UPDATE viola una restricción, el SGBD lo rechaza con un mensaje. Aprender a leerlos es media batalla ganada:</p>
-      <table>
-        <tr><th>Mensaje (resumido)</th><th>Qué significa</th><th>Cómo resolver</th></tr>
-        <tr><td><code>a foreign key constraint fails</code></td><td>El valor de la FK no existe en la tabla padre.</td><td>Inserta primero el padre, o corrige el id.</td></tr>
-        <tr><td><code>Duplicate entry ... for key</code></td><td>Repetiste un valor de PK o de una columna UNIQUE.</td><td>Usa un valor distinto; revisa si ya existe.</td></tr>
-        <tr><td><code>Column ... cannot be null</code></td><td>Dejaste vacía una columna NOT NULL.</td><td>Proporciona un valor para esa columna.</td></tr>
-        <tr><td><code>Data too long for column</code></td><td>El texto excede el tamaño del VARCHAR.</td><td>Acorta el dato o amplía la columna.</td></tr>
-        <tr><td><code>Incorrect ... value</code></td><td>El dato no corresponde al tipo (p. ej. texto en un INT).</td><td>Corrige el valor al tipo esperado.</td></tr>
-      </table>
-      <div class="note">
-        <span class="label">Mentalidad</span>
-        Estos errores no son un fastidio: son tu diseño <em>defendiéndose</em>. Cada rechazo evita que entren datos corruptos a la base.
-      </div>
-    </section>
-
-    <section id="tx">
-      <div class="section-label"><span class="dot"></span>07 · Cargas seguras</div>
-      <h2>Transacciones: todo o nada</h2>
-      <p>Cuando insertas varios registros relacionados (una venta y su detalle, por ejemplo), quieres que se guarden <strong>todos o ninguno</strong>. Una transacción agrupa varias operaciones en una sola unidad:</p>
-      <pre><span class="kw">START TRANSACTION</span>;
-
-<span class="kw">INSERT INTO</span> venta (id_cliente) <span class="kw">VALUES</span> (<span class="st">'C01'</span>);
-<span class="kw">INSERT INTO</span> detalle_venta (folio, id_producto, cantidad)
-<span class="kw">VALUES</span> (<span class="kw">LAST_INSERT_ID</span>(), <span class="st">'P10'</span>, 2);
-
-<span class="kw">COMMIT</span>;   <span class="cm">-- confirma los cambios</span>
-<span class="cm">-- ROLLBACK; deshace todo si algo salió mal</span></pre>
-      <p>Si entre los dos INSERT ocurriera un error, un <code class="inline">ROLLBACK</code> deja la base como estaba, sin ventas a medias.</p>
     </section>
 
     <section id="ejemplos">
-      <div class="section-label"><span class="dot"></span>08 · Ejemplos demostrativos</div>
+      <div class="section-label"><span class="dot"></span>06 · Ejemplos demostrativos</div>
       <h2>Ejemplos resueltos</h2>
-      <p>Usamos el esquema normalizado de la Semana 6: <code class="inline">cliente</code>, <code class="inline">producto</code>, <code class="inline">venta</code> y <code class="inline">detalle_venta</code>.</p>
+      <p>Usamos la base del gimnasio (<code class="inline">instructor</code>, <code class="inline">socio</code>, <code class="inline">clase</code>, <code class="inline">inscripcion</code>) de la práctica guiada.</p>
 
-      <h3>Ejemplo 1 — Poblar en el orden correcto</h3>
-      <pre><span class="cm">-- 1) Primero los padres</span>
-<span class="kw">INSERT INTO</span> cliente <span class="kw">VALUES</span> (<span class="st">'C01'</span>, <span class="st">'Ana López'</span>), (<span class="st">'C02'</span>, <span class="st">'Beto Ramírez'</span>);
-<span class="kw">INSERT INTO</span> producto <span class="kw">VALUES</span>
-    (<span class="st">'P10'</span>, <span class="st">'Teclado mecánico'</span>, 350.00),
-    (<span class="st">'P11'</span>, <span class="st">'Mouse inalámbrico'</span>, 180.00);
+      <h3>Ejemplo 1 — Un índice que sí hace falta</h3>
+      <p>La llave primaria de <code class="inline">inscripcion</code> es <code class="inline">(id_socio, id_clase)</code>, así que buscar por socio ya es rápido. Pero buscar "quién está en la clase 2" filtra por <code class="inline">id_clase</code>, que va en segundo lugar de la PK y no se aprovecha. Agregamos un índice:</p>
+      <pre><span class="kw">CREATE INDEX</span> idx_inscripcion_clase
+<span class="kw">ON</span> inscripcion (id_clase);</pre>
 
-<span class="cm">-- 2) Luego la venta (referencia a cliente)</span>
-<span class="kw">INSERT INTO</span> venta (folio, fecha, id_cliente)
-<span class="kw">VALUES</span> (1001, <span class="st">'2026-06-15'</span>, <span class="st">'C01'</span>);
+      <h3>Ejemplo 2 — Una vista para reportes</h3>
+      <pre><span class="kw">CREATE VIEW</span> vista_clases_llenas <span class="kw">AS</span>
+<span class="kw">SELECT</span> c.nombre <span class="kw">AS</span> clase,
+       i.nombre <span class="kw">AS</span> instructor,
+       <span class="kw">COUNT</span>(ins.id_socio) <span class="kw">AS</span> inscritos,
+       c.cupo_max
+<span class="kw">FROM</span> clase c
+<span class="kw">JOIN</span> instructor i <span class="kw">ON</span> i.id_instructor = c.id_instructor
+<span class="kw">LEFT JOIN</span> inscripcion ins <span class="kw">ON</span> ins.id_clase = c.id_clase
+<span class="kw">GROUP BY</span> c.id_clase;
 
-<span class="cm">-- 3) Por último el detalle (referencia a venta y producto)</span>
-<span class="kw">INSERT INTO</span> detalle_venta <span class="kw">VALUES</span>
-    (1001, <span class="st">'P10'</span>, 2),
-    (1001, <span class="st">'P11'</span>, 1);</pre>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> vista_clases_llenas;</pre>
+      <p>Ahora cualquiera puede ver el reporte con un simple <code class="inline">SELECT * FROM vista_clases_llenas;</code> sin escribir el JOIN cada vez.</p>
 
-      <h3>Ejemplo 2 — Actualizar y borrar</h3>
-      <pre><span class="cm">-- El teclado sube de precio</span>
-<span class="kw">UPDATE</span> producto <span class="kw">SET</span> precio = 399.00 <span class="kw">WHERE</span> id_producto = <span class="st">'P10'</span>;
+      <h3>Ejemplo 3 — Un CHECK que protege los datos</h3>
+      <pre><span class="kw">ALTER TABLE</span> clase
+<span class="kw">ADD CONSTRAINT</span> chk_cupo <span class="kw">CHECK</span> (cupo_max <span class="kw">BETWEEN</span> 1 <span class="kw">AND</span> 100);
 
-<span class="cm">-- Se cancela la venta 1001: con ON DELETE CASCADE,</span>
-<span class="cm">-- su detalle se borra automáticamente</span>
-<span class="kw">DELETE FROM</span> venta <span class="kw">WHERE</span> folio = 1001;</pre>
-
-      <h3>Ejemplo 3 — Leer un error y corregirlo</h3>
-      <pre><span class="cm">-- Intentamos vender un producto que no existe</span>
-<span class="kw">INSERT INTO</span> detalle_venta <span class="kw">VALUES</span> (1001, <span class="st">'P99'</span>, 1);
-<span class="er">ERROR 1452: a foreign key constraint fails</span>
-
-<span class="cm">-- Solución: primero damos de alta el producto P99</span>
-<span class="kw">INSERT INTO</span> producto <span class="kw">VALUES</span> (<span class="st">'P99'</span>, <span class="st">'Audífonos'</span>, 450.00);
-<span class="kw">INSERT INTO</span> detalle_venta <span class="kw">VALUES</span> (1001, <span class="st">'P99'</span>, 1);  <span class="ok">-- OK</span></pre>
+<span class="cm">-- Esto ahora es imposible: el cupo fuera de rango se rechaza</span>
+<span class="kw">UPDATE</span> clase <span class="kw">SET</span> cupo_max = 500 <span class="kw">WHERE</span> id_clase = 1;  <span class="er">-- ERROR</span></pre>
     </section>
 
     <section id="practica">
-      <div class="section-label"><span class="dot"></span>09 · Ejercicios de práctica</div>
+      <div class="section-label"><span class="dot"></span>07 · Ejercicios de práctica</div>
       <h2>Práctica</h2>
 
       <div class="practice">
-        <span class="tag">Ejercicio 1 · Carga ordenada</span>
-        <h3>Puebla el esquema de streaming</h3>
-        <p>Sobre la base de la Práctica 4 (<code class="inline">artista</code>, <code class="inline">usuario</code>, <code class="inline">cancion</code>, <code class="inline">playlist</code>, <code class="inline">cancion_playlist</code>), escribe los INSERT necesarios para cargar 3 artistas, 4 usuarios, 6 canciones, 3 playlists y al menos 8 filas en la tabla intermedia. Respeta el orden de inserción y entrégalo como un solo script.</p>
+        <span class="tag">Ejercicio 1 · Índices</span>
+        <h3>Elige qué indexar</h3>
+        <p>Dadas tres consultas frecuentes sobre la base del gimnasio (buscar socios por correo, listar clases de un instructor, y ordenar socios por fecha de alta), decide qué índices crearías y cuáles <strong>no</strong> hacen falta porque ya existen. Justifica cada decisión y escribe los <code class="inline">CREATE INDEX</code> necesarios.</p>
       </div>
 
       <div class="practice">
-        <span class="tag">Ejercicio 2 · Mantenimiento</span>
-        <h3>Modifica y elimina con criterio</h3>
-        <p>Escribe sentencias para: (a) subir 5% las reproducciones de todas las canciones de un artista; (b) cambiar el plan de un usuario a "premium"; (c) eliminar una playlist y comprobar qué ocurre con sus filas en la tabla intermedia. Explica el resultado de (c) según la acción referencial.</p>
+        <span class="tag">Ejercicio 2 · Vistas</span>
+        <h3>Crea una vista segura</h3>
+        <p>Crea una vista <code class="inline">vista_directorio</code> que muestre solo el <code class="inline">nombre</code> y la <code class="inline">especialidad</code> de los instructores (sin exponer otros datos), y otra vista que liste cada socio con el número de clases en las que está inscrito.</p>
       </div>
 
       <div class="practice">
-        <span class="tag">Ejercicio 3 · Diagnóstico</span>
-        <h3>Caza el error de integridad</h3>
-        <p>Se te dará un script con cuatro INSERT que fallan. Identifica qué restricción viola cada uno (FK, PK/UNIQUE, NOT NULL o tipo de dato), explica el mensaje de error y corrige la sentencia para que se ejecute.</p>
+        <span class="tag">Ejercicio 3 · CHECK</span>
+        <h3>Blinda el dominio</h3>
+        <p>Agrega restricciones <code class="inline">CHECK</code> que garanticen: (a) que <code class="inline">cupo_max</code> sea mayor que 0; (b) que el <code class="inline">correo</code> contenga el carácter <code class="inline">@</code>. Después intenta insertar datos que las violen y documenta el mensaje de error.</p>
       </div>
     </section>
 
     <section id="resumen">
-      <div class="section-label"><span class="dot"></span>10 · Cierre</div>
+      <div class="section-label"><span class="dot"></span>08 · Cierre</div>
       <h2>Resumen de la semana</h2>
       <div class="summary-grid">
-        <div class="summary-item"><div class="icon">➕</div><div class="label">INSERT</div><div class="val">Agregar filas</div></div>
-        <div class="summary-item"><div class="icon">✏️</div><div class="label">UPDATE</div><div class="val">Modificar (con WHERE)</div></div>
-        <div class="summary-item"><div class="icon">🗑️</div><div class="label">DELETE</div><div class="val">Eliminar (con WHERE)</div></div>
-        <div class="summary-item"><div class="icon">🧩</div><div class="label">Orden</div><div class="val">Padres antes que hijos</div></div>
-        <div class="summary-item"><div class="icon">🔒</div><div class="label">Seguridad</div><div class="val">Transacciones</div></div>
-        <div class="summary-item"><div class="icon">➡️</div><div class="label">Próxima (U4)</div><div class="val">SELECT: consultar datos</div></div>
+        <div class="summary-item"><div class="icon">⚡</div><div class="label">Índice</div><div class="val">Lecturas rápidas</div></div>
+        <div class="summary-item"><div class="icon">⚖️</div><div class="label">Costo</div><div class="val">Escrituras + lentas</div></div>
+        <div class="summary-item"><div class="icon">🪟</div><div class="label">Vista</div><div class="val">Consulta guardada</div></div>
+        <div class="summary-item"><div class="icon">🛡️</div><div class="label">CHECK</div><div class="val">Valida el dominio</div></div>
+        <div class="summary-item"><div class="icon">🔍</div><div class="label">Diagnóstico</div><div class="val">EXPLAIN</div></div>
+        <div class="summary-item"><div class="icon">➡️</div><div class="label">Próxima (S9)</div><div class="val">Administración del SGBD</div></div>
       </div>
       <div class="note" style="margin-top:22px;">
         <span class="label">Lo esencial</span>
-        Poblar una base normalizada es un acto de disciplina: inserta los padres antes que los hijos, pon siempre un <code class="inline">WHERE</code> en tus UPDATE y DELETE, y trata cada error de integridad como una alarma útil. Con la base ya construida, diseñada y poblada, en la Unidad IV aprenderemos a <strong>preguntarle</strong> cosas con SELECT.
+        Un índice cambia lecturas lentas por lecturas rápidas, a cambio de escrituras un poco más caras: indexa con criterio. Una vista guarda una consulta y la presenta como tabla, ideal para simplificar y dar seguridad. Y un <code class="inline">CHECK</code> pone reglas de sentido común sobre los valores. Con esto, la Unidad III deja una base no solo correcta, sino también rápida y robusta.
       </div>
     </section>
 
@@ -342,7 +314,7 @@ a foreign key constraint fails</span></pre>
 
 <footer>
   Bases de Datos · ITIID · Universidad Politécnica de Tapachula · Periodo Mayo–Agosto 2026 · Grupo 3°A<br>
-  Elaboró: Christian Jaime García Aquino · Semana 7 (15–19 Junio 2026)
+  Elaboró: Christian Jaime García Aquino · Semana 8 (22–26 Junio 2026)
 </footer>
 
 </body>
